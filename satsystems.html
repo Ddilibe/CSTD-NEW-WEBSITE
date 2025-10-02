@@ -1,341 +1,324 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Department Name - CSTD Admin Portal</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-    />
-    <style>
-      :root {
-        --primary-green: #0d8a53;
-        --secondary-green: #065f39;
-        --primary-red: #dc2626;
-        --secondary-red: #991b1b;
-        --accent-light: #f0fdf4;
-        --text-dark: #1f2937;
-        --transition-speed: 0.3s;
-      }
 
-      body {
-        font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
-        color: var(--text-dark);
-        background-color: #f8fafc;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Department Name - CSTD Admin Portal</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <style>
+    :root {
+      --primary-green: #0d8a53;
+      --secondary-green: #065f39;
+      --primary-red: #dc2626;
+      --secondary-red: #991b1b;
+      --accent-light: #f0fdf4;
+      --text-dark: #1f2937;
+      --transition-speed: 0.3s;
+    }
 
-      .navbar {
-        background-color: white;
-        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
-      }
+    body {
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      color: var(--text-dark);
+      background-color: #f8fafc;
+    }
 
-      .department-header {
-        background: linear-gradient(
-          90deg,
+    .navbar {
+      background-color: white;
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .department-header {
+      background: linear-gradient(90deg,
           var(--primary-green),
-          var(--primary-red)
-        );
-        color: white;
-        padding: 2rem;
-        margin-bottom: 2rem;
-      }
+          var(--primary-red));
+      color: white;
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
 
-      .organogram {
-        background: white;
-        border-radius: 16px;
-        padding: 2rem;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        margin-bottom: 2rem;
-      }
+    .organogram {
+      background: white;
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      margin-bottom: 2rem;
+    }
 
-      .org-level {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 1.5rem;
-        margin-bottom: 2rem;
-      }
+    .org-level {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
 
-      .org-card {
-        background: var(--accent-light);
-        border-left: 4px solid var(--primary-green);
-        padding: 1rem;
-        border-radius: 8px;
-        width: 100%;
-        max-width: 300px;
-        text-align: center;
-      }
+    .org-card {
+      background: var(--accent-light);
+      border-left: 4px solid var(--primary-green);
+      padding: 1rem;
+      border-radius: 8px;
+      width: 100%;
+      max-width: 300px;
+      text-align: center;
+    }
 
-      .org-card h4 {
-        color: var(--primary-green);
-        margin: 0;
-        font-size: 1rem;
-        font-weight: 600;
-      }
+    .org-card h4 {
+      color: var(--primary-green);
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 600;
+    }
 
-      .org-card p {
-        margin: 0.5rem 0 0;
-        font-size: 0.9rem;
-        color: var(--text-dark);
-      }
-      .org-profile-pic {
-        width: 80px;
-        height: 80px;
-        border-radius: 50%;
-        object-fit: cover;
-        border: 3px solid white;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        margin-bottom: 1rem;
-      }
+    .org-card p {
+      margin: 0.5rem 0 0;
+      font-size: 0.9rem;
+      color: var(--text-dark);
+    }
 
+    .org-profile-pic {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid white;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      margin-bottom: 1rem;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .info-card {
+      background: white;
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .info-card h3 {
+      color: var(--primary-green);
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .project-card {
+      border-left: 4px solid var(--primary-green);
+      padding: 1rem;
+      margin-bottom: 1rem;
+      background: var(--accent-light);
+      border-radius: 0 8px 8px 0;
+    }
+
+    .project-card h4 {
+      color: var(--primary-green);
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    .project-status {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      margin-top: 0.5rem;
+    }
+
+    .status-upcoming {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+
+    .status-current {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .status-completed {
+      background: #f1f5f9;
+      color: #475569;
+    }
+
+    @media (max-width: 768px) {
       .content-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 2rem;
-        margin-bottom: 2rem;
+        grid-template-columns: 1fr;
       }
+    }
+  </style>
+</head>
 
-      .info-card {
-        background: white;
-        border-radius: 16px;
-        padding: 1.5rem;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-      }
-
-      .info-card h3 {
-        color: var(--primary-green);
-        font-size: 1.25rem;
-        margin-bottom: 1rem;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-
-      .project-card {
-        border-left: 4px solid var(--primary-green);
-        padding: 1rem;
-        margin-bottom: 1rem;
-        background: var(--accent-light);
-        border-radius: 0 8px 8px 0;
-      }
-
-      .project-card h4 {
-        color: var(--primary-green);
-        margin: 0;
-        font-size: 1rem;
-      }
-
-      .project-status {
-        display: inline-block;
-        padding: 0.25rem 0.75rem;
-        border-radius: 999px;
-        font-size: 0.875rem;
-        font-weight: 500;
-        margin-top: 0.5rem;
-      }
-
-      .status-upcoming {
-        background: #dbeafe;
-        color: #1e40af;
-      }
-
-      .status-current {
-        background: #dcfce7;
-        color: #166534;
-      }
-
-      .status-completed {
-        background: #f1f5f9;
-        color: #475569;
-      }
-
-      @media (max-width: 768px) {
-        .content-grid {
-          grid-template-columns: 1fr;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <!-- Navigation (same as original) -->
-    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
-      <div class="container-fluid">
-        <a
-          class="navbar-brand d-flex align-items-center gap-3"
-          href="/final.html"
-        >
-          <img
-            src="CSTD.png"
-            alt="CSTD Logo"
-            style="width: 50px; height: 50px"
-          />
-          <span style="color: var(--primary-green)">Home</span>
-        </a>
-        <div class="d-flex align-items-center gap-3">
-          <div class="dropdown">
-            <button
-              class="btn btn-link text-dark dropdown-toggle"
-              type="button"
-              id="notificationsDropdown"
-              data-bs-toggle="dropdown"
-            >
-              <i class="fas fa-bell"></i>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-end">
-              <li><a class="dropdown-item" href="#">New leave request</a></li>
-              <li>
-                <a class="dropdown-item" href="#">Document approval needed</a>
-              </li>
-            </ul>
-          </div>
-          <div class="dropdown">
-            <button
-              class="btn btn-link text-dark dropdown-toggle"
-              type="button"
-              id="profileDropdown"
-              data-bs-toggle="dropdown"
-            >
-              <i class="fas fa-user-circle"></i>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-end">
-              <li><a class="dropdown-item" href="#">Profile</a></li>
-              <li><a class="dropdown-item" href="#">Settings</a></li>
-              <li><hr class="dropdown-divider" /></li>
-              <li><a class="dropdown-item" href="#">Logout</a></li>
-            </ul>
-          </div>
+<body>
+  <!-- Navigation (same as original) -->
+  <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+    <div class="container-fluid">
+      <a class="navbar-brand d-flex align-items-center gap-3" href="/index.html">
+        <img src="CSTD.png" alt="CSTD Logo" style="width: 50px; height: 50px" />
+        <span style="color: var(--primary-green)">Home</span>
+      </a>
+      <div class="d-flex align-items-center gap-3">
+        <div class="dropdown">
+          <button class="btn btn-link text-dark dropdown-toggle" type="button" id="notificationsDropdown"
+            data-bs-toggle="dropdown">
+            <i class="fas fa-bell"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="#">New leave request</a></li>
+            <li>
+              <a class="dropdown-item" href="#">Document approval needed</a>
+            </li>
+          </ul>
+        </div>
+        <div class="dropdown">
+          <button class="btn btn-link text-dark dropdown-toggle" type="button" id="profileDropdown"
+            data-bs-toggle="dropdown">
+            <i class="fas fa-user-circle"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="#">Profile</a></li>
+            <li><a class="dropdown-item" href="#">Settings</a></li>
+            <li>
+              <hr class="dropdown-divider" />
+            </li>
+            <li><a class="dropdown-item" href="#">Logout</a></li>
+          </ul>
         </div>
       </div>
-    </nav>
-
-    <!-- Department Header -->
-    <div class="department-header">
-      <div class="container">
-        <h1>Satellite Systems Department</h1>
-      </div>
     </div>
+  </nav>
 
+  <!-- Department Header -->
+  <div class="department-header">
     <div class="container">
-      <!-- Organogram Section -->
-      <div class="organogram">
-        <h2 class="mb-2">Department Organogram</h2>
+      <h1>Satellite Systems Department</h1>
+    </div>
+  </div>
 
-        <!-- HOD Level -->
-        <div class="org-level">
-          <div class="org-card">
-            <h4>Head of Department</h4>
-            <p>Engr.(Dr.) Buhari Mohammed</p>
-          </div>
-        </div>
+  <div class="container">
+    <!-- Organogram Section -->
+    <div class="organogram">
+      <h2 class="mb-2">Department Organogram</h2>
 
-        <!-- Division Heads Level -->
-        <div class="org-level">
-          <div class="d-flex gap-4 flex-wrap justify-content-center w-100">
-            <div class="org-card">
-              <h4>Division Head</h4>
-
-              <p>RF and Microwave</p>
-            </div>
-            <div class="org-card">
-              <h4>Division Head</h4>
-
-              <p>Power</p>
-            </div>
-            <div class="org-card">
-                <h4>Division Head</h4>
-
-                <p>Payload</p>
-            </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Unit Heads Level -->
-        <div class="org-level">
-          <div class="d-flex gap-4 flex-wrap justify-content-center w-100">
-            <div class="org-card">
-              <h4>Units</h4>
-              <p>[Unit Title]</p>
-            </div>
-            <div class="org-card">
-              <h4>Units</h4>
-              <p>[Unit Title]</p>
-            </div>
-            <div class="org-card">
-              <h4>Units</h4>
-              <p>[Unit Title]</p>
-            </div>
-          </div>
+      <!-- HOD Level -->
+      <div class="org-level">
+        <div class="org-card">
+          <h4>Head of Department</h4>
+          <p>Engr.(Dr.) Buhari Mohammed</p>
         </div>
       </div>
 
-      <!-- Content Grid -->
-      <div class="content-grid">
-        <!-- Announcements -->
-        <div class="info-card">
-          <h3><i class="fas fa-bullhorn"></i> Announcements</h3>
-          <div class="announcement-list">
-            <div class="mb-3">
-              <h5>Staff Meeting</h5>
-              <p>Monthly departmental meeting scheduled for next week</p>
-              <small class="text-muted">Posted 2 days ago</small>
-            </div>
-            <!-- Add more announcements as needed -->
+      <!-- Division Heads Level -->
+      <div class="org-level">
+        <div class="d-flex gap-4 flex-wrap justify-content-center w-100">
+          <div class="org-card">
+            <h4>Division Head</h4>
+
+            <p>RF and Microwave</p>
           </div>
-        </div>
+          <div class="org-card">
+            <h4>Division Head</h4>
 
-        <!-- Mandatory Courses -->
-        <div class="info-card">
-          <h3><i class="fas fa-graduation-cap"></i> Mandatory Courses</h3>
-          <div class="course-list">
-            <div class="mb-3">
-              <h5>Project Management</h5>
-              <p>Required for all department staff</p>
-              <small class="text-muted">Deadline: 25/06/2025</small>
-            </div>
-            <!-- Add more courses as needed -->
+            <p>Power</p>
           </div>
-        </div>
+          <div class="org-card">
+            <h4>Division Head</h4>
 
-        <!-- Department Mandate -->
-        <div class="info-card">
-          <h3><i class="fas fa-scroll"></i> Department Mandate</h3>
-          <p>[Department mandate and responsibilities description]</p>
-        </div>
-
-        <!-- Projects -->
-        <div class="info-card">
-          <h3><i class="fas fa-project-diagram"></i> Projects</h3>
-
-          <!-- Upcoming Projects -->
-          <div class="project-card">
-            <h4>Project Name</h4>
-            <p>Brief project description</p>
-            <span class="project-status status-upcoming">Upcoming</span>
-          </div>
-
-          <!-- Current Projects -->
-          <div class="project-card">
-            <h4>Project Name</h4>
-            <p>Brief project description</p>
-            <span class="project-status status-current">Current</span>
-          </div>
-
-          <!-- Completed Projects -->
-          <div class="project-card">
-            <h4>Project Name</h4>
-            <p>Brief project description</p>
-            <span class="project-status status-completed">Completed</span>
+            <p>Payload</p>
           </div>
         </div>
       </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-  </body>
+    <!-- Unit Heads Level -->
+    <div class="org-level">
+      <div class="d-flex gap-4 flex-wrap justify-content-center w-100">
+        <div class="org-card">
+          <h4>Units</h4>
+          <p>[Unit Title]</p>
+        </div>
+        <div class="org-card">
+          <h4>Units</h4>
+          <p>[Unit Title]</p>
+        </div>
+        <div class="org-card">
+          <h4>Units</h4>
+          <p>[Unit Title]</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content Grid -->
+  <div class="content-grid">
+    <!-- Announcements -->
+    <div class="info-card">
+      <h3><i class="fas fa-bullhorn"></i> Announcements</h3>
+      <div class="announcement-list">
+        <div class="mb-3">
+          <h5>Staff Meeting</h5>
+          <p>Monthly departmental meeting scheduled for next week</p>
+          <small class="text-muted">Posted 2 days ago</small>
+        </div>
+        <!-- Add more announcements as needed -->
+      </div>
+    </div>
+
+    <!-- Mandatory Courses -->
+    <div class="info-card">
+      <h3><i class="fas fa-graduation-cap"></i> Mandatory Courses</h3>
+      <div class="course-list">
+        <div class="mb-3">
+          <h5>Project Management</h5>
+          <p>Required for all department staff</p>
+          <small class="text-muted">Deadline: 25/06/2025</small>
+        </div>
+        <!-- Add more courses as needed -->
+      </div>
+    </div>
+
+    <!-- Department Mandate -->
+    <div class="info-card">
+      <h3><i class="fas fa-scroll"></i> Department Mandate</h3>
+      <p>[Department mandate and responsibilities description]</p>
+    </div>
+
+    <!-- Projects -->
+    <div class="info-card">
+      <h3><i class="fas fa-project-diagram"></i> Projects</h3>
+
+      <!-- Upcoming Projects -->
+      <div class="project-card">
+        <h4>Project Name</h4>
+        <p>Brief project description</p>
+        <span class="project-status status-upcoming">Upcoming</span>
+      </div>
+
+      <!-- Current Projects -->
+      <div class="project-card">
+        <h4>Project Name</h4>
+        <p>Brief project description</p>
+        <span class="project-status status-current">Current</span>
+      </div>
+
+      <!-- Completed Projects -->
+      <div class="project-card">
+        <h4>Project Name</h4>
+        <p>Brief project description</p>
+        <span class="project-status status-completed">Completed</span>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
 </html>
