@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="CMMS Dashboard" />
+    <title>CMMS Dashboard</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+
+    <style>
+      :root {
+        --primary-green: #0f766e;
+        --light-green: #34d399;
+        --warning-yellow: #fbbf24;
+        --danger-red: #dc2626;
+        --white: #ffffff;
+      }
+
+      body {
+        background-color: #f0fdf4;
+        font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      }
+
+      .cmms-sidebar {
+        width: 280px;
+        background: var(--white);
+        box-shadow: 0 4px 6px -1px rgba(15, 118, 110, 0.1);
+        height: 100vh;
+        position: fixed;
+        z-index: 1000;
+      }
+
+      .main-content {
+        margin-left: 280px;
+        padding: 2rem;
+      }
+
+      .nav-pills .nav-link {
+        color: var(--primary-green);
+        border-radius: 8px;
+        margin: 0.25rem 1rem;
+        padding: 0.75rem 1rem;
+      }
+
+      .nav-pills .nav-link:hover {
+        background-color: #dcfce7;
+      }
+
+      .nav-pills .nav-link.active {
+        background-color: var(--primary-green);
+        color: var(--white);
+      }
+
+      .stat-card {
+        background: var(--white);
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: 0 1px 3px rgba(15, 118, 110, 0.1);
+        height: 100%;
+      }
+
+      .btn-primary {
+        background-color: var(--primary-green);
+        border-color: var(--primary-green);
+        color: var(--white);
+      }
+
+      .btn-primary:hover {
+        background-color: #0d6c64;
+        border-color: #0d6c64;
+      }
+
+      .btn-outline-primary {
+        color: var(--primary-green);
+        border-color: var(--primary-green);
+      }
+
+      .btn-outline-primary:hover {
+        background-color: var(--primary-green);
+        border-color: var(--primary-green);
+        color: var(--white);
+      }
+
+      .progress {
+        background-color: #dcfce7;
+      }
+
+      .progress-bar {
+        background-color: var(--light-green);
+      }
+
+      .badge.bg-success {
+        background-color: var(--light-green) !important;
+      }
+
+      .badge.bg-warning {
+        background-color: var(--warning-yellow) !important;
+        color: #000 !important;
+      }
+
+      .badge.bg-danger {
+        background-color: var(--danger-red) !important;
+      }
+
+      .status-operational {
+        background-color: var(--light-green);
+      }
+
+      .status-maintenance {
+        background-color: var(--warning-yellow);
+      }
+
+      .status-critical {
+        background-color: var(--danger-red);
+      }
+
+      .table thead th {
+        background-color: #dcfce7;
+        border-bottom: 2px solid #34d399;
+      }
+
+      @media (max-width: 768px) {
+        .cmms-sidebar {
+          transform: translateX(-100%);
+        }
+        .main-content {
+          margin-left: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <aside class="cmms-sidebar">
+      <div class="p-3">
+        <div class="d-flex align-items-center mb-4">
+          <img
+            src="/images.png"
+            alt="Logo"
+            width="80"
+            height="80"
+            class="me-2"
+          />
+          <h1 class="h5 mb-0" style="color: var(--primary-green)">CMMS</h1>
+        </div>
+
+        <nav class="nav flex-column nav-pills">
+          <a class="nav-link active" href="#">
+            <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+          </a>
+          <a class="nav-link" href="#">
+            <i class="fas fa-building me-2"></i> Asset Management
+          </a>
+          <a class="nav-link" href="#">
+            <i class="fas fa-clipboard-list me-2"></i> Work Orders
+          </a>
+          <a class="nav-link" href="#">
+            <i class="fas fa-calendar-check me-2"></i> Maintenance
+          </a>
+          <a class="nav-link" href="#">
+            <i class="fas fa-chart-bar me-2"></i> Reports
+          </a>
+          <a class="nav-link" href="#">
+            <i class="fas fa-cog me-2"></i> Settings
+          </a>
+        </nav>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold" style="color: var(--primary-green)">Dashboard</h2>
+        <div class="d-flex gap-3">
+          <button class="btn btn-primary">
+            <i class="fas fa-plus me-2"></i> New Work Order
+          </button>
+          <div class="input-group" style="width: 300px">
+            <input
+              type="search"
+              class="form-control"
+              placeholder="Search assets..."
+            />
+            <button class="btn btn-outline-primary">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <div class="row g-4 mb-4">
+        <div class="col-md-3">
+          <div class="stat-card">
+            <h3 class="h6 text-muted mb-3">Total Assets</h3>
+            <h4 class="display-6 fw-bold mb-3">243</h4>
+            <div class="progress">
+              <div
+                class="progress-bar"
+                role="progressbar"
+                style="width: 85%"
+              ></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="stat-card">
+            <h3 class="h6 text-muted mb-3">Pending Work Orders</h3>
+            <h4 class="display-6 fw-bold mb-3">27</h4>
+            <div class="d-flex gap-2">
+              <span class="badge bg-danger">5 High Priority</span>
+              <span class="badge bg-warning">12 Medium</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="stat-card">
+            <h3 class="h6 text-muted mb-3">Maintenance</h3>
+            <h4 class="display-6 fw-bold mb-2">98%</h4>
+            <div style="color: var(--light-green)">
+              <i class="fas fa-arrow-up me-1"></i>
+              <span>2% from last month</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="stat-card">
+            <h3 class="h6 text-muted mb-3">Asset Status</h3>
+            <div class="d-flex flex-column gap-2">
+              <div class="d-flex align-items-center">
+                <span class="status-indicator status-operational me-2"></span>
+                Operational (85%)
+              </div>
+              <div class="d-flex align-items-center">
+                <span class="status-indicator status-maintenance me-2"></span>
+                Maintenance (10%)
+              </div>
+              <div class="d-flex align-items-center">
+                <span class="status-indicator status-critical me-2"></span>
+                Critical (5%)
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-md-8">
+          <div class="stat-card">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <h3 class="h5 mb-0">Asset Overview</h3>
+              <select class="form-select w-auto">
+                <option>All Categories</option>
+                <option>HVAC Systems</option>
+                <option>Equipment</option>
+                <option>Vehicles</option>
+              </select>
+            </div>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Asset Name</th>
+                    <th>Category</th>
+                    <th>Status</th>
+                    <th>Last Maintenance</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>HVAC Unit - Lab</td>
+                    <td>HVAC Systems</td>
+                    <td><span class="badge bg-success">Operational</span></td>
+                    <td>2024-03-15</td>
+                  </tr>
+                  <tr>
+                    <td>Printer HP-2000</td>
+                    <td>Equipment</td>
+                    <td><span class="badge bg-danger">Critical</span></td>
+                    <td>2024-03-10</td>
+                  </tr>
+                  <tr>
+                    <td>Backup Generator</td>
+                    <td>Power Systems</td>
+                    <td><span class="badge bg-warning">Maintenance</span></td>
+                    <td>2024-03-12</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="stat-card mb-4">
+            <h3 class="h5 mb-3">Quick Actions</h3>
+            <div class="d-grid gap-2">
+              <button class="btn btn-outline-primary">
+                <i class="fas fa-tools me-2"></i> Schedule Maintenance
+              </button>
+              <button class="btn btn-outline-primary">
+                <i class="fas fa-file-invoice me-2"></i> Generate Report
+              </button>
+              <button class="btn btn-outline-primary">
+                <i class="fas fa-bell me-2"></i> Set Reminder
+              </button>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <h3 class="h5 mb-3">Recent Activities</h3>
+            <div class="list-group list-group-flush">
+              <div class="list-group-item border-0 px-0">
+                <div class="d-flex justify-content-between">
+                  <div>
+                    <p class="mb-0" style="color: var(--primary-green)">
+                      Work Order #245 completed
+                    </p>
+                    <small class="text-muted">HVAC maintenance - Lab 1</small>
+                  </div>
+                  <small class="text-muted">2h ago</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

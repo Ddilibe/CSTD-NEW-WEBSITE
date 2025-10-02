@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Professional CMMS Dashboard">
+    <title>Enterprise CMMS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-green: #10b981;
+            --light-green: #34d399;
+            --dark-green: #059669;
+            --bg-green: #ecfdf5;
+            --warning: #fbbf24;
+            --danger: #ef4444;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-700: #374151;
+            --white: #ffffff;
+        }
+
+        body {
+            background: var(--gray-100);
+            font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+        }
+
+        /* Modern Sidebar */
+        .cmms-sidebar {
+            width: 280px;
+            background: var(--white);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            height: 100vh;
+            position: fixed;
+            z-index: 1000;
+            padding: 1.5rem 1rem;
+        }
+
+        .main-content {
+            margin-left: 280px;
+            padding: 2rem;
+        }
+
+        /* Navigation */
+        .nav-link {
+            color: var(--gray-700);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            margin: 0.25rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover {
+            background: var(--bg-green);
+            color: var(--primary-green);
+        }
+
+        .nav-link.active {
+            background: var(--primary-green);
+            color: var(--white);
+        }
+
+        /* Cards */
+        .stat-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 1.5rem;
+            height: 100%;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--gray-200);
+            transition: transform 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Status Indicators */
+        .status-badge {
+            padding: 0.375rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .status-operational {
+            background: var(--bg-green);
+            color: var(--dark-green);
+        }
+
+        .status-warning {
+            background: #fffbeb;
+            color: #b45309;
+        }
+
+        .status-danger {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        /* Table Styles */
+        .data-table {
+            background: var(--white);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .data-table th {
+            background: var(--gray-100);
+            font-weight: 600;
+            padding: 1rem;
+        }
+
+        .data-table td {
+            padding: 1rem;
+            vertical-align: middle;
+        }
+
+        /* Search Bar */
+        .search-container {
+            position: relative;
+            width: 300px;
+        }
+
+        .search-container i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-700);
+        }
+
+        .search-input {
+            padding-left: 2.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--gray-200);
+        }
+
+        /* Action Buttons */
+        .btn-primary {
+            background: var(--primary-green);
+            border-color: var(--primary-green);
+            padding: 0.75rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-radius: 8px;
+        }
+
+        .btn-primary:hover {
+            background: var(--dark-green);
+            border-color: var(--dark-green);
+        }
+
+        /* Progress Bars */
+        .progress {
+            height: 8px;
+            background: var(--gray-200);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background: var(--primary-green);
+            transition: width 0.3s ease;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .cmms-sidebar {
+                transform: translateX(-100%);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="cmms-sidebar">
+        <div class="d-flex align-items-center gap-3 mb-4">
+            <img src="/api/placeholder/40/40" alt="Logo" class="rounded">
+            <h1 class="h5 mb-0" style="color: var(--primary-green);">Enterprise CMMS</h1>
+        </div>
+
+        <nav class="nav flex-column">
+            <a class="nav-link active">
+                <i class="fas fa-gauge"></i>
+                Dashboard
+            </a>
+            <a class="nav-link">
+                <i class="fas fa-building"></i>
+                Asset Management
+            </a>
+            <a class="nav-link">
+                <i class="fas fa-clipboard-list"></i>
+                Work Orders
+            </a>
+            <a class="nav-link">
+                <i class="fas fa-calendar"></i>
+                Maintenance
+            </a>
+            <a class="nav-link">
+                <i class="fas fa-chart-bar"></i>
+                Reports
+            </a>
+            <a class="nav-link">
+                <i class="fas fa-cog"></i>
+                Settings
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="fw-bold mb-1">Facility Dashboard</h2>
+                <p class="text-muted">Overview of maintenance operations</p>
+            </div>
+            <div class="d-flex gap-3 align-items-center">
+                <div class="search-container">
+                    <i class="fas fa-search"></i>
+                    <input type="search" class="form-control search-input" placeholder="Search assets...">
+                </div>
+                <button class="btn btn-primary">
+                    <i class="fas fa-plus"></i>
+                    New Work Order
+                </button>
+            </div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="row g-4 mb-4">
+            <!-- Total Assets -->
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div class="rounded-circle p-3" style="background: var(--bg-green);">
+                            <i class="fas fa-building" style="color: var(--primary-green);"></i>
+                        </div>
+                        <span class="badge status-operational">+5%</span>
+                    </div>
+                    <h6 class="text-muted mb-2">Total Assets</h6>
+                    <h3 class="fw-bold mb-3">387</h3>
+                    <div class="progress">
+                        <div class="progress-bar" style="width: 85%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Work Orders -->
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div class="rounded-circle p-3" style="background: var(--bg-green);">
+                            <i class="fas fa-clipboard-list" style="color: var(--primary-green);"></i>
+                        </div>
+                        <span class="badge status-warning">42 Active</span>
+                    </div>
+                    <h6 class="text-muted mb-2">Work Orders</h6>
+                    <div class="d-flex gap-2 mb-2">
+                        <span class="badge bg-danger">8 Critical</span>
+                        <span class="badge bg-warning">18 Pending</span>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar bg-warning" style="width: 65%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Maintenance -->
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div class="rounded-circle p-3" style="background: var(--bg-green);">
+                            <i class="fas fa-tools" style="color: var(--primary-green);"></i>
+                        </div>
+                        <span class="badge status-operational">On Track</span>
+                    </div>
+                    <h6 class="text-muted mb-2">Maintenance Compliance</h6>
+                    <h3 class="fw-bold mb-2">95%</h3>
+                    <div class="text-success d-flex align-items-center gap-1">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>3% improvement</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Health -->
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div class="rounded-circle p-3" style="background: var(--bg-green);">
+                            <i class="fas fa-heart-pulse" style="color: var(--primary-green);"></i>
+                        </div>
+                    </div>
+                    <h6 class="text-muted mb-3">System Health</h6>
+                    <div class="d-flex flex-column gap-2">
+                        <div class="d-flex justify-content-between">
+                            <span>Operational</span>
+                            <span class="fw-bold text-success">80%</span>
+                        </div>
+                        <div class="progress mb-2">
+                            <div class="progress-bar bg-success" style="width: 80%"></div>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span>Maintenance</span>
+                            <span class="fw-bold text-warning">15%</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar bg-warning" style="width: 15%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Asset Overview -->
+        <div class="row g-4">
+            <div class="col-md-8">
+                <div class="stat-card">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h5 class="mb-0">Asset Overview</h5>
+                        <select class="form-select" style="width: auto;">
+                            <option>All Categories</option>
+                            <option>HVAC Systems</option>
+                            <option>Power Systems</option>
+                            <option>Safety Equipment</option>
+                            <option>IT Infrastructure</option>
+                            <option>Laboratory Equipment</option>
+                        </select>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table data-table mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Asset Name</th>
+                                    <th>Category</th>
+                                    <th>Location</th>
+                                    <th>Status</th>
+                                    <th>Next Service</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Main HVAC System</td>
+                                    <td>HVAC Systems</td>
+                                    <td>Building A</td>
+                                    <td><span class="status-badge status-operational">Operational</span></td>
+                                    <td>Mar 25, 2024</td>
+                                </tr>
+                                <tr>
+                                    <td>Backup Generator</td>
+                                    <td>Power Systems</td>
+                                    <td>Utility Room</td>
+                                    <td><span class="status-badge status-warning">Maintenance Due</span></td>
+                                    <td>Mar 20, 2024</td>
+                                </tr>
+                                <tr>
+                                    <td>Server Room AC</td>
+                                    <td>HVAC Systems</td>
+                                    <td>IT Center</td>
+                                    <td><span class="status-badge status-danger">Critical</span></td>
+                                    <td>Immediate</td>
+                                </tr>
+                                <tr>
+                                    <td>Fire System</td>
+                                    <td>Safety Equipment</td>
+                                    <td>All Floors</td>
+                                    <td><span class="status-badge status-operational">Operational</span></td>
+                                    <td>Apr 15, 2024</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions and Activity -->
+            <div class="col-md-4">
+                <div class="stat-card mb-4">
+                    <h5 class="mb-3">Priority Actions</h5>
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-outline-danger d-flex align-items-center justify-content-between">
+                            <span><i class="fas fa-exclamation-circle me-2"></i>Server Room AC Repair</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                        <button class

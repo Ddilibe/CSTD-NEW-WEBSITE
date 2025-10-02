@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AsoLens CMMS</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary-green: #10b981;
+        --secondary-green: #3eaa47;
+        --accent-green: #0d8a53;
+        --status-red: #dc2626;
+        --status-yellow: #f59e0b;
+        --status-green: #10b981;
+        --bg-light: #f8fafc;
+      }
+
+      body {
+        background-color: var(--bg-light);
+        font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      }
+
+      .cmms-sidebar {
+        width: 280px;
+        background: white;
+        box-shadow: 2px 0 15px rgba(0, 0, 0, 0.05);
+        height: 100vh;
+        position: fixed;
+      }
+
+      .main-content {
+        margin-left: 280px;
+        padding: 2rem;
+      }
+
+      .nav-pills .nav-link {
+        border-radius: 8px;
+        margin: 0.25rem 0;
+        transition: all 0.2s;
+      }
+
+      .stat-card {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+        transition: transform 0.2s;
+      }
+
+      .stat-card:hover {
+        transform: translateY(-3px);
+      }
+
+      .asset-status-bar {
+        height: 8px;
+        border-radius: 4px;
+        background: #e5e7eb;
+        overflow: hidden;
+      }
+
+      .workorder-priority {
+        width: 8px;
+        border-radius: 4px 0 0 4px;
+      }
+
+      .priority-high {
+        background-color: var(--status-red);
+      }
+      .priority-medium {
+        background-color: var(--status-yellow);
+      }
+      .priority-low {
+        background-color: var(--status-green);
+      }
+
+      @media (max-width: 768px) {
+        .cmms-sidebar {
+          width: 100%;
+          height: auto;
+          position: relative;
+        }
+        .main-content {
+          margin-left: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Sidebar Navigation -->
+    <div class="cmms-sidebar pt-3">
+      <div class="d-flex align-items-center mb-4">
+        <img src="/images.png" alt="NASRDA Logo" width="80" class="me-2" />
+        <h5 class="mb-0 font-awesome text-primary">CMMS</h5>
+      </div>
+
+      <nav class="nav flex-column nav-pills">
+        <a class="nav-link active" href="#">
+          <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+        </a>
+        <a class="nav-link" href="assetmgt.html">
+          <i class="fas fa-building me-2"></i> Asset Management
+        </a>
+        <a class="nav-link" href="workorder.html">
+          <i class="fas fa-clipboard-list me-2"></i> Work Orders
+        </a>
+        <a class="nav-link" href="#">
+          <i class="fas fa-calendar-check me-2"></i> Maintenance Schedule
+        </a>
+        <a class="nav-link" href="#">
+          <i class="fas fa-chart-bar me-2"></i> Reports
+        </a>
+        <div class="mt-4 pt-3 border-top">
+          <a class="nav-link" href="#">
+            <i class="fas fa-cog me-2"></i> System Settings
+          </a>
+        </div>
+      </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Header -->
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold">Dashboard</h3>
+        <div class="d-flex gap-3" href="newrequest.html">
+          <button class="btn btn-primary">
+            <i class="fas fa-plus me-2"></i> New Work Order
+          </button>
+          <div class="input-group" style="width: 300px">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Search assets..."
+            />
+            <button class="btn btn-outline-secondary">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="row g-4 mb-4">
+        <div class="col-md-3">
+          <div class="stat-card">
+            <h6 class="text-muted mb-3">Total Assets</h6>
+            <h2 class="fw-bold">243</h2>
+            <div class="asset-status-bar">
+              <div class="h-100 bg-success" style="width: 85%"></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="stat-card">
+            <h6 class="text-muted mb-3">Pending Work Orders</h6>
+            <h2 class="fw-bold">27</h2>
+            <span class="badge bg-danger">5 High Priority</span>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="stat-card">
+            <h6 class="text-muted mb-3">Preventive Maintenance</h6>
+            <h2 class="fw-bold">98%</h2>
+            <span class="text-success">+2% from last month</span>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="stat-card">
+            <h6 class="text-muted mb-3">Asset Status</h6>
+            <div class="d-flex justify-content-between">
+              <div>
+                <div class="text-success">● Operational</div>
+                <div class="text-warning">● Maintenance</div>
+                <div class="text-danger">● Critical</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Asset Overview -->
+      <div class="row g-4">
+        <div class="col-md-8">
+          <div class="stat-card">
+            <div class="d-flex justify-content-between mb-4">
+              <h5>Asset Overview</h5>
+              <select class="form-select w-auto">
+                <option>All Categories</option>
+                <option>AC Systems</option>
+                <option>Printer</option>
+                <option>Computer</option>
+                <option>Generator</option>
+                <option>Fire Extinguisher</option>
+              </select>
+            </div>
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Asset Name</th>
+                    <th>Category</th>
+                    <th>Status</th>
+                    <th>Last Maintenance</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>AC Unit - Lab</td>
+                    <td>AC Systems</td>
+                    <td><span class="badge bg-success">Operational</span></td>
+                    <td>2024-03-15</td>
+                  </tr>
+                  <tr>
+                    <td>HP Photocopier</td>
+                    <td>Printer</td>
+                    <td><span class="badge bg-danger">Critical</span></td>
+                    <td>2025-03-15</td>
+                  </tr>
+                  <tr>
+                    <td>Generator</td>
+                    <td>Tiger 345B</td>
+                    <td><span class="badge bg-warning">Maintenance</span></td>
+                    <td>2024-03-15</td>
+                  </tr>
+                  <!-- Add more rows -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="col-md-4">
+          <div class="stat-card mb-4">
+            <h5 class="mb-3">Quick Actions</h5>
+            <button class="btn btn-outline-primary w-100 mb-2">
+              <i class="fas fa-tools me-2"></i> Schedule Maintenance
+            </button>
+            <button class="btn btn-outline-success w-100 mb-2">
+              <i class="fas fa-file-invoice me-2"></i> Generate Report
+            </button>
+            <button class="btn btn-outline-warning w-100">
+              <i class="fas fa-bell me-2"></i> Set Reminder
+            </button>
+          </div>
+
+          <div class="stat-card">
+            <h5 class="mb-3">Recent Activities</h5>
+            <div class="list-group">
+              <div class="list-group-item border-0 py-2">
+                <small class="text-muted">2h ago</small>
+                <div>Work Order #245 completed</div>
+              </div>
+              <!-- Add more activities -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

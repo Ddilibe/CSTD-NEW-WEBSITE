@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ground Station Control</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary-color: #00873e; /* Green */
+        --secondary-color: #ffffff; /* White */
+        --accent-color: #ff0000; /* Red */
+        --card-bg: #f8f9fa; /* Light panel background */
+      }
+      body {
+        font-family: "Roboto", sans-serif;
+        background: #e9ecef;
+        color: #333;
+        margin: 0;
+        padding: 0;
+      }
+      /* Left Side Navigation */
+      .side-nav {
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 280px;
+        background: var(--card-bg);
+        border-right: 1px solid var(--primary-color);
+        z-index: 1000;
+        overflow-y: auto;
+        padding-top: 60px;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+      }
+      .nav-section {
+        padding: 15px;
+        border-bottom: 1px solid rgba(0, 135, 62, 0.2);
+      }
+      .nav-header {
+        color: var(--primary-color);
+        font-family: "Orbitron", sans-serif;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 10px;
+      }
+      .nav-link {
+        color: #333;
+        padding: 8px 15px;
+        display: flex;
+        align-items: center;
+        border-radius: 4px;
+        transition: background 0.3s, color 0.3s;
+        text-decoration: none;
+      }
+      .nav-link:hover {
+        background: rgba(0, 135, 62, 0.2);
+        color: var(--primary-color);
+      }
+      .nav-link i {
+        width: 20px;
+        margin-right: 10px;
+        color: var(--primary-color);
+      }
+      /* Mission Timer & Satellite Status */
+      .mission-timer {
+        font-family: "Orbitron", sans-serif;
+        color: var(--primary-color);
+        font-size: 1.2rem;
+        text-align: center;
+        padding: 10px;
+        background: rgba(0, 135, 62, 0.1);
+        border-radius: 4px;
+        margin: 10px 15px;
+      }
+      .satellite-status-mini {
+        padding: 10px 15px;
+        border-radius: 4px;
+        background: rgba(0, 135, 62, 0.1);
+        margin: 5px 0;
+        transition: background 0.3s;
+      }
+      .satellite-status-mini:hover {
+        background: rgba(0, 135, 62, 0.2);
+      }
+      .satellite-status-mini .badge {
+        font-size: 0.8rem;
+      }
+      /* Constellation Diagram in Side Nav */
+      .constellation-diagram {
+        padding: 15px;
+        background: rgba(0, 0, 0, 0.05);
+        border-radius: 4px;
+        margin: 10px 15px;
+        height: 150px;
+        border: 1px solid var(--primary-color);
+      }
+      /* Top Navbar with CSTD Logo */
+      .top-navbar {
+        position: fixed;
+        top: 0;
+        left: 280px;
+        right: 0;
+        height: 60px;
+        background: var(--primary-color);
+        color: var(--secondary-color);
+        display: flex;
+        align-items: center;
+        padding: 0 20px;
+        z-index: 999;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+      .top-navbar .navbar-brand {
+        font-family: "Orbitron", sans-serif;
+        font-size: 1.2rem;
+        color: var(--secondary-color);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+      }
+      .top-navbar .navbar-brand img {
+        height: 40px;
+        margin-right: 10px;
+      }
+      /* Main Content */
+      .main-content {
+        margin-left: 280px;
+        padding: 80px 20px 20px 20px; /* top padding accounts for fixed top navbar */
+      }
+      /* Simulation Canvas Styles */
+      canvas.simulation-canvas {
+        width: 100%;
+        height: 600px; /* increased height for larger simulation */
+        display: block;
+        border-radius: 4px;
+      }
+      /* Simulation Box: clearly separate the two columns */
+      .simulation-box {
+        border: 2px solid var(--primary-color);
+        border-radius: 4px;
+        padding: 10px;
+        margin-bottom: 20px;
+        background: #000; /* dark background to enhance the space effect */
+      }
+      /* Responsive Adjustments */
+      @media (max-width: 992px) {
+        .side-nav {
+          transform: translateX(-100%);
+          transition: transform 0.3s;
+        }
+        .side-nav.show {
+          transform: translateX(0);
+        }
+        .main-content {
+          margin-left: 0;
+          padding-top: 70px;
+        }
+        .top-navbar {
+          left: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Left Navigation -->
+    <nav class="side-nav">
+      <!-- Mission Timer -->
+      <div class="mission-timer">Mission Time: T+265:14:22</div>
+      <!-- Satellite Selection -->
+      <div class="nav-section">
+        <div class="nav-header">Active Satellites</div>
+        <div class="satellite-status-mini">
+          <div class="d-flex justify-content-between align-items-center">
+            <span><i class="fas fa-satellite"></i> SAR-1</span>
+            <span class="badge bg-success">Active</span>
+          </div>
+          <small class="text-muted">Orbit: MEO-SSO (3200km)</small>
+        </div>
+        <div class="satellite-status-mini">
+          <div class="d-flex justify-content-between align-items-center">
+            <span><i class="fas fa-satellite"></i> MS-1</span>
+            <span class="badge bg-danger">Maintenance</span>
+          </div>
+          <small class="text-muted">Orbit: MEO-SSO (3200km)</small>
+        </div>
+      </div>
+      <!-- Navigation Links -->
+      <div class="nav-section">
+        <div class="nav-header">Mission Control</div>
+        <a href="#" class="nav-link">
+          <i class="fas fa-rocket"></i> Mission Overview
+        </a>
+        <a href="#" class="nav-link">
+          <i class="fas fa-calendar"></i> Schedule Manager
+        </a>
+        <a href="#" class="nav-link">
+          <i class="fas fa-bell"></i> Alerts Center
+        </a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-header">Technical Specifications</div>
+        <a href="#" class="nav-link">
+          <i class="fas fa-microchip"></i> Payload Systems
+        </a>
+        <a href="#" class="nav-link">
+          <i class="fas fa-solar-panel"></i> Power Systems
+        </a>
+        <a href="#" class="nav-link">
+          <i class="fas fa-broadcast-tower"></i> Communication
+        </a>
+        <a href="#" class="nav-link">
+          <i class="fas fa-temperature-high"></i> Thermal Control
+        </a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-header">Orbital Dynamics</div>
+        <a href="#" class="nav-link">
+          <i class="fas fa-globe"></i> Current Location
+        </a>
+        <a href="#" class="nav-link">
+          <i class="fas fa-route"></i> Trajectory Planning
+        </a>
+        <a href="#" class="nav-link">
+          <i class="fas fa-project-diagram"></i> Constellation Map
+        </a>
+        <div class="constellation-diagram">
+          <canvas id="constellationView"></canvas>
+        </div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-header">Network Integration</div>
+        <a href="#" class="nav-link">
+          <i class="fas fa-network-wired"></i> Ground Station Network
+        </a>
+        <a href="#" class="nav-link">
+          <i class="fas fa-satellite-dish"></i> Cross-Link Status
+        </a>
+        <a href="#" class="nav-link">
+          <i class="fas fa-exchange-alt"></i> Data Relay System
+        </a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-header">Analysis Tools</div>
+        <a href="#" class="nav-link">
+          <i class="fas fa-chart-line"></i> Performance Analytics
+        </a>
+        <a href="#" class="nav-link">
+          <i class="fas fa-layer-group"></i> Data Processing
+        </a>
+        <a href="#" class="nav-link">
+          <i class="fas fa-camera"></i> Image Analysis
+        </a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-header">Documentation</div>
+        <a href="#" class="nav-link">
+          <i class="fas fa-book"></i> Mission Handbook
+        </a>
+        <a href="#" class="nav-link">
+          <i class="fas fa-file-alt"></i> Technical Specs
+        </a>
+        <a href="#" class="nav-link">
+          <i class="fas fa-history"></i> Mission Logs
+        </a>
+      </div>
+      <!-- New Nav Section for International Constellations -->
+      <div class="nav-section">
+        <div class="nav-header">International Constellations</div>
+        <a href="#" class="nav-link"
+          ><i class="fas fa-satellite-dish"></i> Iridium NEXT</a
+        >
+        <a href="#" class="nav-link"
+          ><i class="fas fa-satellite-dish"></i> OneWeb</a
+        >
+        <a href="#" class="nav-link"
+          ><i class="fas fa-satellite-dish"></i> Starlink</a
+        >
+      </div>
+    </nav>
+
+    <!-- Top Navbar with CSTD Logo -->
+    <div class="top-navbar d-flex justify-content-between align-items-center">
+      <a href="#" class="navbar-brand">
+        <img src="images.png" alt="CSTD Logo" />
+        NASRDA Ground Station Control
+      </a>
+      <button class="btn btn-outline-light d-lg-none" id="toggleNav">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="container">
+        <!-- Simulation Grid (No Dashboard header to maximize space) -->
+        <div class="row">
+          <!-- Left Column: SAR Satellite Simulation -->
+          <div class="col-md-6 simulation-box">
+            <h3 class="text-center text-white">SAR Simulation</h3>
+            <canvas id="simulationCanvasSAR" class="simulation-canvas"></canvas>
+          </div>
+          <!-- Right Column: Multispectral Satellite Simulation (3 satellites) -->
+          <div class="col-md-6 simulation-box">
+            <h3 class="text-center text-white">MultiSpec Simulation</h3>
+            <canvas id="simulationCanvasMS" class="simulation-canvas"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Toggle side navigation on mobile devices
+      document
+        .getElementById("toggleNav")
+        .addEventListener("click", function () {
+          document.querySelector(".side-nav").classList.toggle("show");
+        });
+
+      /* ------------- Simulation Function for Each Satellite ------------- */
+      function simulateSatellite(
+        canvasId,
+        satelliteType,
+        orbitRadius,
+        speed,
+        altitude
+      ) {
+        const canvas = document.getElementById(canvasId);
+        const ctx = canvas.getContext("2d");
+
+        // Earth object (updated on resize)
+        let earth = { x: 0, y: 0, radius: 60 };
+
+        function resizeCanvas() {
+          canvas.width = canvas.offsetWidth;
+          canvas.height = canvas.offsetHeight;
+          earth.x = canvas.width / 2;
+          earth.y = canvas.height * 0.8;
+        }
+        window.addEventListener("resize", resizeCanvas);
+        resizeCanvas();
+
+        // Create a starfield
+        const stars = [];
+        const starCount = 100;
+        for (let i = 0; i < starCount; i++) {
+          stars.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            radius: Math.random() * 1.5 + 0.5,
+          });
+        }
+
+        // Clouds for Earth
+        const clouds = [
+          { x: -20, y: -10, radius: 10 },
+          { x: 15, y: -15, radius: 8 },
+          { x: 0, y: 5, radius: 12 },
+        ];
+
+        // Target imaging area on Earth (green)
+        const targetArea = { x: earth.x, y: earth.y, radius: 20 };
+
+        // Satellite(s) setup: for multispectral, create 3 satellites; otherwise 1.
+        let satellites = [];
+        if (satelliteType === "Multispectral Satellite") {
+          satellites = [
+            { orbitRadius: orbitRadius, angle: 0, speed: speed },
+            {
+              orbitRadius: orbitRadius,
+              angle: (2 * Math.PI) / 3,
+              speed: speed,
+            },
+            {
+              orbitRadius: orbitRadius,
+              angle: (4 * Math.PI) / 3,
+              speed: speed,
+            },
+          ];
+        } else {
+          satellites = [{ orbitRadius: orbitRadius, angle: 0, speed: speed }];
+        }
+
+        // Function to draw a satellite with solar panels
+        function drawSatellite(x, y, angleToTarget) {
+          ctx.save();
+          ctx.translate(x, y);
+          ctx.rotate(angleToTarget);
+          // Left solar panel
+          ctx.fillStyle = "#0d47a1";
+          ctx.fillRect(-40, -3, 20, 6);
+          ctx.strokeStyle = "#fff";
+          ctx.strokeRect(-40, -3, 20, 6);
+          // Right solar panel
+          ctx.fillStyle = "#0d47a1";
+          ctx.fillRect(20, -3, 20, 6);
+          ctx.strokeStyle = "#fff";
+          ctx.strokeRect(20, -3, 20, 6);
+          // Satellite body
+          ctx.fillStyle = "#444";
+          ctx.fillRect(-10, -4, 20, 8);
+          ctx.strokeStyle = "#000";
+          ctx.strokeRect(-10, -4, 20, 8);
+          ctx.restore();
+        }
+
+        // Animation loop for the simulation
+        function draw() {
+          // Clear canvas
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+          // Draw space background
+          const bgGradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+          bgGradient.addColorStop(0, "#000428");
+          bgGradient.addColorStop(1, "#004e92");
+          ctx.fillStyle = bgGradient;
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+          // Draw stars
+          stars.forEach((star) => {
+            ctx.fillStyle = "#ffffff";
+            ctx.beginPath();
+            ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+            ctx.fill();
+          });
+
+          // Draw Earth with natural blue gradient
+          const earthGradient = ctx.createRadialGradient(
+            earth.x,
+            earth.y,
+            earth.radius * 0.1,
+            earth.x,
+            earth.y,
+            earth.radius
+          );
+          earthGradient.addColorStop(0, "#87cefa");
+          earthGradient.addColorStop(0.7, "#1e90ff");
+          earthGradient.addColorStop(1, "#00008b");
+          ctx.fillStyle = earthGradient;
+          ctx.beginPath();
+          ctx.arc(earth.x, earth.y, earth.radius, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Overlay clouds on Earth
+          clouds.forEach((cloud) => {
+            ctx.fillStyle = "rgba(255,255,255,0.6)";
+            ctx.beginPath();
+            ctx.ellipse(
+              earth.x + cloud.x,
+              earth.y + cloud.y,
+              cloud.radius * 1.2,
+              cloud.radius,
+              0,
+              0,
+              Math.PI * 2
+            );
+            ctx.fill();
+          });
+
+          // Draw target imaging area in green
+          ctx.fillStyle = "rgba(0,128,0,0.5)";
+          ctx.beginPath();
+          ctx.arc(earth.x, earth.y, targetArea.radius, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Update and draw each satellite
+          satellites.forEach(function (sat) {
+            sat.angle += sat.speed;
+            const satX = earth.x + sat.orbitRadius * Math.cos(sat.angle);
+            const satY = earth.y + sat.orbitRadius * Math.sin(sat.angle) - 50;
+            const angleToTarget = Math.atan2(
+              targetArea.y - satY,
+              targetArea.x - satX
+            );
+            drawSatellite(satX, satY, angleToTarget);
+
+            // Draw a pulsating beam from the satellite to the target
+            const beamAlpha = 0.5 + 0.5 * Math.sin(Date.now() / 200);
+            const beamGradient = ctx.createLinearGradient(
+              satX,
+              satY,
+              targetArea.x,
+              targetArea.y
+            );
+            beamGradient.addColorStop(
+              0,
+              `rgba(255,255,255,${0.8 * beamAlpha})`
+            );
+            beamGradient.addColorStop(1, `rgba(0,128,0,${0.2 * beamAlpha})`);
+            ctx.strokeStyle = beamGradient;
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(satX, satY);
+            ctx.lineTo(targetArea.x, targetArea.y);
+            ctx.stroke();
+
+            // Display satellite type, altitude, and coordinates near its position
+            ctx.font = "16px Roboto";
+            ctx.fillStyle = "#fff";
+            const coords = `(${satX.toFixed(0)}, ${satY.toFixed(0)})`;
+            const text = `${satelliteType} - Altitude: ${altitude} km, Coords: ${coords}`;
+            ctx.fillText(text, satX + 15, satY - 15);
+          });
+
+          requestAnimationFrame(draw);
+        }
+        draw();
+      }
+
+      // Start the SAR simulation (1 satellite)
+      simulateSatellite(
+        "simulationCanvasSAR",
+        "SAR Satellite",
+        180,
+        0.003,
+        "3000"
+      );
+      // Start the Multispectral simulation (3 satellites)
+      simulateSatellite(
+        "simulationCanvasMS",
+        "Multispectral Satellite",
+        220,
+        0.002,
+        "3200"
+      );
+    </script>
+  </body>
+</html>

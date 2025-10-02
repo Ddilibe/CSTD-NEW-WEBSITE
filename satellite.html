@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAR Satellite Development Proposal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f1419 0%, #1a2332 100%);
+            color: white;
+            overflow-x: hidden;
+        }
+        
+        .presentation-container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .slide {
+            width: 100%;
+            height: 100vh;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px;
+            position: relative;
+            background: linear-gradient(135deg, #0f1419 0%, #1a2332 100%);
+        }
+        
+        .slide.active {
+            display: flex;
+        }
+        
+        .slide-header {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            font-size: 14px;
+            color: #64b5f6;
+            font-weight: 500;
+        }
+        
+        .slide-number {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            font-size: 14px;
+            color: #90a4ae;
+        }
+        
+        h1 {
+            font-size: 3.5em;
+            margin-bottom: 30px;
+            text-align: center;
+            background: linear-gradient(45deg, #64b5f6, #42a5f5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        
+        h2 {
+            font-size: 2.8em;
+            margin-bottom: 40px;
+            text-align: center;
+            color: #64b5f6;
+            font-weight: 600;
+        }
+        
+        h3 {
+            font-size: 2.2em;
+            margin-bottom: 30px;
+            color: #81c784;
+            font-weight: 600;
+        }
+        
+        .subtitle {
+            font-size: 1.4em;
+            text-align: center;
+            color: #b0bec5;
+            margin-bottom: 50px;
+            font-weight: 300;
+        }
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            width: 100%;
+            max-width: 1200px;
+        }
+        
+        .content-section {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid rgba(100, 181, 246, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        
+        .dept-card {
+            background: linear-gradient(135deg, rgba(100, 181, 246, 0.1), rgba(66, 165, 245, 0.05));
+            padding: 35px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(100, 181, 246, 0.3);
+            backdrop-filter: blur(15px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .dept-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #64b5f6, #42a5f5);
+        }
+        
+        .dept-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(100, 181, 246, 0.2);
+        }
+        
+        .dept-title {
+            font-size: 1.6em;
+            color: #64b5f6;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .responsibilities {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .responsibilities li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+            color: #e0e0e0;
+            line-height: 1.5;
+        }
+        
+        .responsibilities li::before {
+            content: '▶';
+            position: absolute;
+            left: 0;
+            color: #81c784;
+            font-size: 0.8em;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+        
+        .nav-btn {
+            padding: 12px 24px;
+            background: rgba(100, 181, 246, 0.2);
+            border: 2px solid #64b5f6;
+            color: #64b5f6;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .nav-btn:hover {
+            background: #64b5f6;
+            color: #0f1419;
+            transform: translateY(-2px);
+        }
+        
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .slide-indicators {
+            position: fixed;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+        
+        .indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(100, 181, 246, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .indicator.active {
+            background: #64b5f6;
+            transform: scale(1.3);
+        }
+        
+        .key-specs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin: 30px 0;
+        }
+        
+        .spec-item {
+            background: rgba(129, 199, 132, 0.1);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid rgba(129, 199, 132, 0.3);
+        }
+        
+        .spec-value {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #81c784;
+            margin-bottom: 5px;
+        }
+        
+        .spec-label {
+            font-size: 1em;
+            color: #b0bec5;
+        }
+        
+        .timeline {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 40px 0;
+            position: relative;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #64b5f6, #81c784);
+            z-index: 1;
+        }
+        
+        .timeline-item {
+            background: #1a2332;
+            padding: 15px 20px;
+            border-radius: 10px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            border: 2px solid #64b5f6;
+            min-width: 200px;
+        }
+        
+        .timeline-phase {
+            font-weight: 600;
+            color: #64b5f6;
+            margin-bottom: 5px;
+        }
+        
+        .timeline-duration {
+            font-size: 0.9em;
+            color: #90a4ae;
+        }
+        
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .benefit-item {
+            background: rgba(100, 181, 246, 0.1);
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 4px solid #64b5f6;
+        }
+        
+        .benefit-title {
+            font-size: 1.3em;
+            color: #64b5f6;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .benefit-desc {
+            color: #e0e0e0;
+            line-height: 1.5;
+        }
+        
+        @media (max-width: 768px) {
+            .slide {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 2.5em;
+            }
+            
+            h2 {
+                font-size: 2em;
+            }
+            
+            .content-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .key-specs {
+                grid-template-columns: 1fr;
+            }
+            
+            .timeline {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .timeline::before {
+                display: none;
+            }
+            
+            .benefits-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <!-- Slide 1: Title Slide -->
+        <div class="slide active">
+            <div class="slide-header">Centre for Satellite Technology Development</div>
+            <h1>Small SAR Satellite Development Proposal</h1>
+            <p class="subtitle">Advanced Synthetic Aperture Radar Mission<br>Collaborative Engineering Initiative</p>
+            <div class="key-specs">
+                <div class="spec-item">
+                    <div class="spec-value">X-Band</div>
+                    <div class="spec-label">SAR Frequency</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-value">100kg</div>
+                    <div class="spec-label">Target Mass</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-value">500km</div>
+                    <div class="spec-label">Operational Orbit</div>
+                </div>
+            </div>
+            <div class="slide-number">1 / 12</div>
+        </div>
+
+        <!-- Slide 2: Mission Overview -->
+        <div class="slide">
+            <div class="slide-header">Mission Overview</div>
+            <h2>SAR Satellite Mission Objectives</h2>
+            <div class="content-grid">
+                <div class="content-section">
+                    <h3>Primary Objectives</h3>
+                    <ul class="responsibilities">
+                        <li>High-resolution Earth observation capabilities</li>
+                        <li>Weather-independent imaging operations</li>
+                        <li>Maritime and land surface monitoring</li>
+                        <li>Disaster response and management support</li>
+                        <li>Agricultural and environmental monitoring</li>
+                    </ul>
+                </div>
+                <div class="content-section">
+                    <h3>Technical Specifications</h3>
+                    <ul class="responsibilities">
+                        <li>Resolution: 1-3 meters in stripmap mode</li>
+                        <li>Swath width: 20-100 km (mode dependent)</li>
+                        <li>Polarization: Dual-pol capability (HH/VV)</li>
+                        <li>Mission duration: 3-5 years minimum</li>
+                        <li>Data downlink: X-band at 100 Mbps</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-number">2 / 12</div>
+        </div>
+
+        <!-- Slide 3: Project Timeline -->
+        <div class="slide">
+            <div class="slide-header">Development Schedule</div>
+            <h2>Project Timeline & Milestones</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-phase">Phase A</div>
+                    <div class="timeline-duration">Months 1-6</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-phase">Phase B</div>
+                    <div class="timeline-duration">Months 7-18</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-phase">Phase C/D</div>
+                    <div class="timeline-duration">Months 19-36</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-phase">Launch & Operations</div>
+                    <div class="timeline-duration">Month 37+</div>
+                </div>
+            </div>
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <div class="benefit-title">Phase A - Feasibility</div>
+                    <div class="benefit-desc">Mission requirements definition, preliminary design, risk assessment, and technology readiness evaluation</div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-title">Phase B - Design</div>
+                    <div class="benefit-desc">Detailed system design, component selection, interface definitions, and critical design reviews</div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-title">Phase C/D - Development</div>
+                    <div class="benefit-desc">Manufacturing, assembly, integration, testing, and launch preparation activities</div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-title">Operations Phase</div>
+                    <div class="benefit-desc">Launch campaign, commissioning, routine operations, and mission data utilization</div>
+                </div>
+            </div>
+            <div class="slide-number">3 / 12</div>
+        </div>
+
+        <!-- Slide 4: Satellite Missions & Data Communication -->
+        <div class="slide">
+            <div class="slide-header">Department Responsibilities</div>
+            <h2>Satellite Missions & Data Communication Department</h2>
+            <div class="dept-card">
+                <div class="dept-title">Core Responsibilities</div>
+                <ul class="responsibilities">
+                    <li>Mission requirements definition and validation</li>
+                    <li>Operational concept development and mission planning</li>
+                    <li>Communication link budget analysis and optimization</li>
+                    <li>Data transmission protocols and encryption standards</li>
+                    <li>Mission operations procedures and timeline development</li>
+                    <li>Telemetry, tracking, and command (TT&C) system design</li>
+                    <li>Data downlink scheduling and priority management</li>
+                    <li>Communication system performance monitoring</li>
+                    <li>Mission success criteria definition and verification</li>
+                    <li>Coordination with international space agencies for frequency allocation</li>
+                </ul>
+            </div>
+            <div class="slide-number">4 / 12</div>
+        </div>
+
+        <!-- Slide 5: Satellite Systems - RF & Payload -->
+        <div class="slide">
+            <div class="slide-header">Department Responsibilities</div>
+            <h2>Satellite Systems Department</h2>
+            <div class="content-grid">
+                <div class="dept-card">
+                    <div class="dept-title">RF Division</div>
+                    <ul class="responsibilities">
+                        <li>SAR antenna design and beam pattern optimization</li>
+                        <li>RF front-end electronics development</li>
+                        <li>Transmitter and receiver system design</li>
+                        <li>RF interference mitigation strategies</li>
+                        <li>Antenna pointing and calibration systems</li>
+                        <li>RF component testing and qualification</li>
+                    </ul>
+                </div>
+                <div class="dept-card">
+                    <div class="dept-title">Payload Division</div>
+                    <ul class="responsibilities">
+                        <li>SAR signal processing unit development</li>
+                        <li>Data compression and formatting algorithms</li>
+                        <li>Payload computer and software architecture</li>
+                        <li>Image quality assessment and calibration</li>
+                        <li>Payload thermal and mechanical interfaces</li>
+                        <li>Mission data storage and buffer management</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-number">5 / 12</div>
+        </div>
+
+        <!-- Slide 6: Satellite Systems - Power -->
+        <div class="slide">
+            <div class="slide-header">Department Responsibilities</div>
+            <h2>Satellite Systems Department - Power Division</h2>
+            <div class="dept-card">
+                <div class="dept-title">Power Division Responsibilities</div>
+                <ul class="responsibilities">
+                    <li>Solar array design and deployment mechanism</li>
+                    <li>Battery system selection and management</li>
+                    <li>Power distribution and regulation architecture</li>
+                    <li>Peak power handling for SAR transmission pulses</li>
+                    <li>Power budget analysis and optimization</li>
+                    <li>Electrical protection and fault isolation systems</li>
+                    <li>Power subsystem thermal management</li>
+                    <li>Energy storage system health monitoring</li>
+                    <li>Power system redundancy and reliability design</li>
+                    <li>Solar array sun-tracking and orientation control</li>
+                </ul>
+            </div>
+            <div class="slide-number">6 / 12</div>
+        </div>
+
+        <!-- Slide 7: Spacecraft Structure & Mechanisms -->
+        <div class="slide">
+            <div class="slide-header">Department Responsibilities</div>
+            <h2>Spacecraft Structure & Mechanisms Department</h2>
+            <div class="dept-card">
+                <div class="dept-title">Core Responsibilities</div>
+                <ul class="responsibilities">
+                    <li>Primary spacecraft structure design and analysis</li>
+                    <li>Launch vehicle interface and adapter design</li>
+                    <li>Deployable mechanisms for solar arrays and antennas</li>
+                    <li>Vibration and shock isolation systems</li>
+                    <li>Structural finite element modeling and validation</li>
+                    <li>Materials selection and space environment compatibility</li>
+                    <li>Mechanical integration procedures and tooling</li>
+                    <li>Pyrotechnic and non-pyrotechnic release mechanisms</li>
+                    <li>Structural mass optimization and load path analysis</li>
+                    <li>Mechanical system testing and qualification protocols</li>
+                </ul>
+            </div>
+            <div class="slide-number">7 / 12</div>
+        </div>
+
+        <!-- Slide 8: Spacecraft Aerodynamics & Control -->
+        <div class="slide">
+            <div class="slide-header">Department Responsibilities</div>
+            <h2>Spacecraft Aerodynamics & Control Department</h2>
+            <div class="dept-card">
+                <div class="dept-title">Core Responsibilities</div>
+                <ul class="responsibilities">
+                    <li>Attitude determination and control system (ADCS) design</li>
+                    <li>Orbital mechanics and trajectory analysis</li>
+                    <li>Reaction wheel and momentum management systems</li>
+                    <li>Star tracker and GPS receiver integration</li>
+                    <li>Atmospheric drag modeling and orbit maintenance</li>
+                    <li>SAR imaging geometry and pointing requirements</li>
+                    <li>Spacecraft stability and control algorithm development</li>
+                    <li>Thruster system design for orbit adjustments</li>
+                    <li>Navigation system accuracy and performance analysis</li>
+                    <li>Mission orbit optimization and collision avoidance</li>
+                </ul>
+            </div>
+            <div class="slide-number">8 / 12</div>
+        </div>
+
+        <!-- Slide 9: Research, Innovation & Development -->
+        <div class="slide">
+            <div class="slide-header">Department Responsibilities</div>
+            <h2>Research, Innovation & Development Department</h2>
+            <div class="dept-card">
+                <div class="dept-title">Core Responsibilities</div>
+                <ul class="responsibilities">
+                    <li>Advanced SAR processing algorithm development</li>
+                    <li>Machine learning and AI integration for image analysis</li>
+                    <li>Novel antenna and RF technology research</li>
+                    <li>Miniaturization techniques for small satellite platforms</li>
+                    <li>Technology demonstration payload development</li>
+                    <li>Future mission concept studies and feasibility analysis</li>
+                    <li>Intellectual property development and patent filing</li>
+                    <li>Academic partnerships and research collaboration</li>
+                    <li>Emerging technology assessment and integration</li>
+                    <li>Innovation workshops and technical knowledge transfer</li>
+                </ul>
+            </div>
+            <div class="slide-number">9 / 12</div>
+        </div>
+
+        <!-- Slide 10: Ground Segment -->
+        <div class="slide">
+            <div class="slide-header">Department Responsibilities</div>
+            <h2>Ground Segment Department</h2>
+            <div class="dept-card">
+                <div class="dept-title">Core Responsibilities</div>
+                <ul class="responsibilities">
+                    <li>Ground station antenna and RF system design</li>
+                    <li>Mission operations center setup and procedures</li>
+                    <li>Satellite tracking and contact scheduling</li>
+                    <li>Data reception, processing, and archival systems</li>
+                    <li>Ground-to-satellite command and control interfaces</li>
+                    <li>Real-time satellite health monitoring systems</li>
+                    <li>Data product generation and quality control</li>
+                    <li>Ground segment network architecture and redundancy</li>
+                    <li>User interface development for mission operations</li>
+                    <li>Ground system security and access control protocols</li>
+                </ul>
+            </div>
+            <div class="slide-number">10 / 12</div>
+        </div>
+
+        <!-- Slide 11: ICT Department -->
+        <div class="slide">
+            <div class="slide-header">Department Responsibilities</div>
+            <h2>Information & Communication Technology Department</h2>
+            <div class="dept-card">
+                <div class="dept-title">Core Responsibilities</div>
+                <ul class="responsibilities">
+                    <li>Mission data management and database architecture</li>
+                    <li>Cloud computing infrastructure for data processing</li>
+                    <li>Cybersecurity protocols and data protection systems</li>
+                    <li>Software development frameworks and tools</li>
+                    <li>Network infrastructure and bandwidth management</li>
+                    <li>Data distribution platforms and user portals</li>
+                    <li>System integration and interface testing</li>
+                    <li>IT support for development and operations teams</li>
+                    <li>Backup and disaster recovery systems</li>
+                    <li>Data analytics platforms and visualization tools</li>
+                </ul>
+            </div>
+            <div class="slide-number">11 / 12</div>
+        </div>
+
+        <!-- Slide 12: Conclusion -->
+        <div class="slide">
+            <div class="slide-header">Project Summary</div>
+            <h2>Mission Success Through Collaborative Excellence</h2>
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <div class="benefit-title">Strategic Benefits</div>
+                    <div class="benefit-desc">Enhanced Earth observation capabilities, technology demonstration, and international competitiveness in small satellite development</div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-title">Technical Innovation</div>
+                    <div class="benefit-desc">Advanced SAR technology integration, miniaturized systems development, and cutting-edge signal processing capabilities</div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-title">Collaborative Approach</div>
+                    <div class="benefit-desc">Clear departmental responsibilities, integrated development process, and shared expertise across all technical domains</div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-title">Future Readiness</div>
+                    <div class="benefit-desc">Foundation for constellation missions, commercial applications, and advanced space technology development programs</div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 40px;">
+                <h3 style="color: #81c784;">Ready to Launch Innovation</h3>
+                <p style="font-size: 1.2em; color: #b0bec5; margin-top: 15px;">Empowering Earth observation through collaborative engineering excellence</p>
+            </div>
+            <div class="slide-number">12 / 12</div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="navigation">
+        <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">Previous</button>
+        <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Next</button>
+    </div>
+
+    <!-- Slide Indicators -->
+    <div class="slide-indicators" id="indicators"></div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        // Initialize indicators
+        function initIndicators() {
+            const indicatorsContainer = document.getElementById('indicators');
+            for (let i = 0; i < totalSlides; i++) {
+                const indicator = document.createElement('div');
+                indicator.className = 'indicator';
+                if (i === 0) indicator.classList.add('active');
+                indicator.addEventListener('click', () => goToSlide(i));
+                indicatorsContainer.appendChild(indicator);
+            }
+        }
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            
+            // Update indicators
+            document.querySelectorAll('.indicator').forEach((indicator, index) => {
+                indicator.classList.toggle('active', index === currentSlide);
+            });
+            
+            // Update navigation buttons
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+        }
+
+        function changeSlide(direction) {
+            if (direction === 1 && currentSlide < totalSlides - 1) {
+                showSlide(currentSlide + 1);
+            } else if (direction === -1 && currentSlide > 0) {
+                showSlide(currentSlide - 1);
+            }
+        }
+
+        function goToSlide(n) {
+            showSlide(n);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                changeSlide(1);
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                changeSlide(-1);
+            }
+        });
+
+        // Initialize
+        initIndicators();
+        showSlide(0);
+
+        // Touch/swipe support for mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const diff = touchStartX - touchEndX;
+            
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0) {
+                    changeSlide(1); // Swipe left - next slide
+                } else {
+                    changeSlide(-1); // Swipe right - previous slide
+                }
+            }
+        }
+    </script>
+</body>
+</html>

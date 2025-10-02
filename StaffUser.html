@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSTD Portal - Dashboard</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <style>
+      :root {
+        --primary-green: #0d8a53;
+        --secondary-green: #065f39;
+        --primary-red: #dc2626;
+        --secondary-red: #991b1b;
+        --accent-light: #f0fdf4;
+        --text-dark: #1f2937;
+        --transition-speed: 0.3s;
+      }
+
+      .dashboard-wrapper {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      /* Sidebar Styles */
+      .sidebar {
+        width: 280px;
+        background: white;
+        border-right: 1px solid #e5e7eb;
+        position: fixed;
+        height: 100vh;
+        overflow-y: auto;
+      }
+
+      .sidebar-header {
+        padding: 1.5rem;
+        border-bottom: 1px solid #e5e7eb;
+      }
+
+      .sidebar-menu {
+        padding: 1rem 0;
+      }
+
+      .menu-item {
+        padding: 0.75rem 1.5rem;
+        display: flex;
+        align-items: center;
+        color: var(--text-dark);
+        text-decoration: none;
+        transition: all var(--transition-speed);
+      }
+
+      .menu-item:hover {
+        background: var(--accent-light);
+        color: var(--primary-green);
+      }
+
+      .menu-item i {
+        margin-right: 1rem;
+        width: 20px;
+      }
+
+      /* Main Content Styles */
+      .main-content {
+        margin-left: 280px;
+        flex: 1;
+        background: #f8fafc;
+        padding: 2rem;
+      }
+
+      /* Search Bar */
+      .search-bar {
+        background: white;
+        padding: 1rem;
+        border-radius: 12px;
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        margin-bottom: 2rem;
+      }
+
+      .search-input {
+        border: none;
+        padding: 0.5rem;
+        width: 100%;
+        outline: none;
+      }
+
+      /* Quick Access Grid */
+      .quick-access-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+      }
+
+      .quick-access-card {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 12px;
+        text-align: center;
+        transition: all var(--transition-speed);
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .quick-access-card:hover {
+        transform: translateY(-5px);
+      }
+
+      /* Notifications Panel */
+      .notifications-panel {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 12px;
+        margin-bottom: 2rem;
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .notification-item {
+        padding: 1rem 0;
+        border-bottom: 1px solid #e5e7eb;
+      }
+
+      /* Role-specific content */
+      .role-specific-content {
+        display: none;
+      }
+
+      .role-specific-content.active {
+        display: block;
+      }
+
+      /* User Profile Dropdown */
+      .user-profile {
+        position: relative;
+        padding: 1.5rem;
+        border-top: 1px solid #e5e7eb;
+      }
+
+      /* Mobile Responsiveness */
+      @media (max-width: 768px) {
+        .sidebar {
+          transform: translateX(-100%);
+          position: fixed;
+          z-index: 1000;
+          transition: transform var(--transition-speed);
+        }
+
+        .sidebar.active {
+          transform: translateX(0);
+        }
+
+        .main-content {
+          margin-left: 0;
+        }
+
+        .quick-access-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* Additional Components */
+      .chart-container {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 12px;
+        margin-bottom: 2rem;
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .announcements {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 12px;
+        margin-bottom: 2rem;
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Modal Styles */
+      .modal-custom {
+        border-radius: 12px;
+      }
+
+      .modal-custom .modal-header {
+        background: var(--accent-light);
+        border-radius: 12px 12px 0 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="dashboard-wrapper">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <img
+            src="CSTD.png"
+            alt="CSTD Logo"
+            style="width: 40px; height: 40px"
+          />
+          <span class="ms-2 fw-bold">Dashboard</span>
+        </div>
+
+        <div class="sidebar-menu">
+          <a href="/AdminMain.html" class="menu-item">
+            <i class="fas fa-home"></i>
+            Home
+          </a>
+          <a href="#" class="menu-item">
+            <i class="fas fa-folder-open"></i>
+            APER
+          </a>
+          <a href="#" class="menu-item">
+            <i class="fas fa-book"></i>
+            Divisional Goals
+          </a>
+          <a href="#admin" class="menu-item admin-only">
+            <i class="fas fa-users-cog"></i>
+            Departmental Affairs
+          </a>
+          <a href="#procurement" class="menu-item">
+            <i class="fas fa-shopping-cart"></i>
+            Mandatory Courses for 2025
+          </a>
+          <a href="/skills.jpg" class="menu-item">
+            <i class="fas fa-award"></i>
+            <!-- Changed from fa-headset to fa-award -->
+            Update Your Skills
+          </a>
+          
+      
+
+        <!-- In the quick access grid, change: -->
+        <div class="quick-access-grid">
+          <!-- Other quick access cards remain the same -->
+          <div class="quick-access-card">
+            <i class="fas fa-award fa-2x mb-3 text-info"></i>
+            <!-- Changed from fa-headset to fa-award -->
+            <h6>Competence</h6>
+            <p class="small text-muted">Track your progress</p>
+          </div>
+        </div>
+
+        <div class="user-profile">
+          <div class="dropdown">
+            <button
+              class="btn btn-light dropdown-toggle w-100"
+              type="button"
+              data-bs-toggle="dropdown"
+            >
+              <i class="fas fa-user-circle me-2"></i>Dami Chuka
+            </button>
+            <ul class="dropdown-menu">
+              <li>
+                <a class="dropdown-item" href="#profile"
+                  ><i class="fas fa-user me-2"></i>Profile</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" href="#settings"
+                  ><i class="fas fa-cog me-2"></i>Settings</a
+                >
+              </li>
+              <li><hr class="dropdown-divider" /></li>
+              <li>
+                <a class="dropdown-item" href="#logout"
+                  ><i class="fas fa-sign-out-alt me-2"></i>Logout</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <!-- Search Bar -->
+        <div class="search-bar">
+          <div class="input-group">
+            <span class="input-group-text bg-white border-0">
+              <i class="fas fa-search"></i>
+            </span>
+            <input
+              type="text"
+              class="search-input"
+              placeholder="Search across all divisions..."
+            />
+          </div>
+        </div>
+
+        <!-- Quick Access Grid -->
+        <div class="quick-access-grid">
+          <div class="quick-access-card">
+            <i class="fas fa-folder-open fa-2x mb-3 text-primary"></i>
+            <h6>My CSTD File</h6>
+            <p class="small text-muted">My records</p>
+          </div>
+          <div class="quick-access-card">
+            <i class="fas fa-book fa-2x mb-3 text-success"></i>
+            <h6>E-Library</h6>
+            <p class="small text-muted"></p>
+            <a href="/eLibrary.html" class="btn btn-cstd">Browse research papers</a>
+          </div>
+          <div class="quick-access-card">
+        <i class="fas fa-bell fa-2x mb-3 text-danger"></i>
+        <h6>Notifications</h6>
+        <p class="small text-muted">Updates & alerts</p>
+    </div>
+    <div class="quick-access-card">
+      <i class="fas fa-comments fa-2x mb-3 text-warning"></i>
+      <h6>SERVICOM</h6>
+      <p class="small text-muted">Submit & track complaints</p>
+      <a href="/Servicom.html" class="btn btn-cstd">Access Portal</a>
+    </div>
+        </div>
+        <div class="quick-access-grid">
+            <div class="quick-access-card">
+                <i class="fas fa-user-circle fa-2x mb-3 text-primary"></i>
+                <h6>My Profile</h6>
+                <p class="small text-muted">Personal details & records</p>
+            </div>
+            <div class="quick-access-card">
+                <i class="fas fa-calendar-check fa-2x mb-3 text-success"></i>
+                <h6>My Attendance</h6>
+                <p class="small text-muted">Clock in/out </p>
+            </div>
+            <div class="quick-access-card">
+                <i class="fas fa-tasks fa-2x mb-3 text-warning"></i>
+                <h6>My Unit Schedule</h6>
+                <p class="small text-muted">Assignments & deadlines</p>
+            </div>
+            <div class="quick-access-card">
+                <i class="fas fa-folder-open fa-2x mb-3 text-secondary"></i>
+                <h6>My Documents</h6>
+                <p class="small text-muted">Files & submissions</p>
+                <a href="/FileSubmission.html" class="btn btn-cstd">Upload</a>
+            </div>
+        </div>
+
+        <!-- Announcements -->
+        <div class="announcements">
+          <h5 class="mb-4">NOTICE BOARD</h5>
+          <div class="notification-item">
+            <h6>CSTD General Meeting</h6>
+            <p class="text-muted mb-0">Schedule: 11 AM - 2 PM</p>
+            <p class="text-muted mb-0">Date: February 18, 2025</p>
+          </div>
+          <div class="notification-item">
+            <h6>New Library Resources</h6>
+            <p class="text-muted mb-0">
+              Latest research papers added to E-Library
+            </p>
+          </div>
+        </div>
+        
+
+        <!-- Role-specific Sections -->
+        <div class="staff-overview-container">
+            <!-- Personal Stats Summary -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="stat-card bg-white p-3 rounded shadow-sm">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h6 class="mb-0">Performance Score</h6>
+                            <i class="fas fa-chart-line text-primary"></i>
+                        </div>
+                        <h3 class="mb-0">92%</h3>
+                        <div class="small text-success">
+                            <i class="fas fa-arrow-up"></i> 3% from last month
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-card bg-white p-3 rounded shadow-sm">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h6 class="mb-0">Attendance Rate</h6>
+                            <i class="fas fa-user-check text-success"></i>
+                        </div>
+                        <h3 class="mb-0">95%</h3>
+                        <div class="small text-success">
+                            <i class="fas fa-arrow-up"></i> 1% from last month
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-card bg-white p-3 rounded shadow-sm">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h6 class="mb-0">Skills Growth</h6>
+                            <i class="fas fa-brain text-info"></i>
+                        </div>
+                        <h3 class="mb-0">+5</h3>
+                        <div class="small text-muted">New skills this quarter</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-card bg-white p-3 rounded shadow-sm">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h6 class="mb-0">Task Completion</h6>
+                            <i class="fas fa-tasks text-warning"></i>
+                        </div>
+                        <h3 class="mb-0">88%</h3>
+                        <div class="small text-success">
+                            <i class="fas fa-arrow-up"></i> 5% from last month
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- Performance Trends -->
+            <div class="row mb-4">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h5 class="card-title mb-0">Performance Trajectory</h5>
+                                <div class="btn-group">
+                                    <button class="btn btn-sm btn-outline-secondary">Week</button>
+                                    <button class="btn btn-sm btn-outline-secondary active">Month</button>
+                                    <button class="btn btn-sm btn-outline-secondary">Quarter</button>
+                                </div>
+                            </div>
+                            <canvas id="performanceChart" height="300"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title mb-4">Skills Distribution</h5>
+                            <canvas id="skillsChart" height="300"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- Detailed Metrics -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title mb-4">Current Projects</h5>
+                            <div class="project-list">
+                                <div class="project-item p-3 border-bottom">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <h6 class="mb-0">Website Redesign</h6>
+                                        <span class="badge bg-success">On Track</span>
+                                    </div>
+                                    <div class="progress" style="height: 6px;">
+                                        <div class="progress-bar bg-success" style="width: 75%"></div>
+                                    </div>
+                                </div>
+                                <div class="project-item p-3 border-bottom">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <h6 class="mb-0">Database Migration</h6>
+                                        <span class="badge bg-warning">Pending</span>
+                                    </div>
+                                    <div class="progress" style="height: 6px;">
+                                        <div class="progress-bar bg-warning" style="width: 45%"></div>
+                                    </div>
+                                </div>
+                                <div class="project-item p-3">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <h6 class="mb-0">Security Audit</h6>
+                                        <span class="badge bg-info">Planning</span>
+                                    </div>
+                                    <div class="progress" style="height: 6px;">
+                                        <div class="progress-bar bg-info" style="width: 15%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title mb-4">Recent Achievements</h5>
+                            <div class="achievement-list">
+                                <div class="achievement-item d-flex align-items-center p-3 border-bottom">
+                                    <div class="achievement-icon me-3">
+                                        <i class="fas fa-trophy text-warning fa-2x"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-1">Project Excellence Award</h6>
+                                        <small class="text-muted">Received for Best Performance</small>
+                                    </div>
+                                </div>
+                                <div class="achievement-item d-flex align-items-center p-3 border-bottom">
+                                    <div class="achievement-icon me-3">
+                                        <i class="fas fa-certificate text-info fa-2x"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-1">Fullstack Web Certification</h6>
+                                        <small class="text-muted">Completed Advanced Cloud Architecture</small>
+                                    </div>
+                                </div>
+                                <div class="achievement-item d-flex align-items-center p-3">
+                                    <div class="achievement-icon me-3">
+                                        <i class="fas fa-award text-success fa-2x"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-1">Perfect Attendance</h6>
+                                        <small class="text-muted">3 Months Consecutive</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <script>
+            // Performance Chart with Trends
+            const performanceCtx = document.getElementById('performanceChart').getContext('2d');
+            new Chart(performanceCtx, {
+                type: 'line',
+                data: {
+                    labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+                    datasets: [
+                        {
+                            label: 'Performance Score (%)',
+                            data: [78, 82, 85, 88, 92, 95], // Hypothetical monthly performance scores
+                            borderColor: '#0d6efd',
+                            backgroundColor: 'rgba(13, 110, 253, 0.2)',
+                            fill: true,
+                            tension: 0.4,
+                        },
+                        {
+                            label: 'Attendance Rate (%)',
+                            data: [90, 92, 93, 94, 96, 98], // Hypothetical attendance rates
+                            borderColor: '#198754',
+                            backgroundColor: 'rgba(25, 135, 84, 0.2)',
+                            fill: true,
+                            tension: 0.4,
+                        },
+                    ],
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: (context) =>
+                                    `${context.dataset.label}: ${context.raw}%`,
+                            },
+                        },
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            title: {
+                                display: true,
+                                text: 'Percentage (%)',
+                            },
+                        },
+                    },
+                },
+            });
+          
+            // Skills Distribution Chart with Categories and Data
+            const skillsCtx = document.getElementById('skillsChart').getContext('2d');
+            new Chart(skillsCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['Technical', 'Leadership', 'Communication', 'Problem Solving', 'Teamwork'],
+                    datasets: [
+                        {
+                            label: 'Current Skill Levels',
+                            data: [90, 80, 85, 75, 88], // Hypothetical skill ratings
+                            borderColor: '#0d6efd',
+                            backgroundColor: 'rgba(13, 110, 253, 0.2)',
+                            pointBackgroundColor: '#0d6efd',
+                            pointBorderColor: '#0d6efd',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: '#0d6efd',
+                        },
+                    ],
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                    },
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                stepSize: 20,
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.1)',
+                            },
+                            angleLines: {
+                                color: 'rgba(0, 0, 0, 0.2)',
+                            },
+                        },
+                    },
+                },
+            });
+          </script>
+          
+          
+        
+        <style>
+        .stat-card {
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);
+        }
+        
+        .achievement-icon {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background-color: rgba(0,0,0,.05);
+        }
+        
+        .project-item:hover {
+            background-color: rgba(0,0,0,.02);
+        }
+        
+        .achievement-item:hover {
+            background-color: rgba(0,0,0,.02);
+        }
+        </style>
+</html>

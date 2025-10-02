@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSTD Project Management Department Infographic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 40vh;
+            max-height: 400px;
+        }
+        .flowchart-arrow {
+            font-size: 2rem;
+            line-height: 1;
+            color: #118AB2;
+        }
+        .card-icon {
+            font-size: 2.5rem;
+            line-height: 1;
+        }
+        .unit-icon {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+    <!-- Chosen Color Palette: Energetic & Playful (#FF6B6B, #FFD166, #06D6A0, #118AB2, #073B4C) -->
+    <!-- Neither Mermaid JS NOR SVG were used anywhere in the output. -->
+
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4">
+            <h1 class="text-2xl md:text-3xl font-bold text-[#073B4C]">CSTD Project Management Department</h1>
+        </nav>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8">
+        
+        <section id="intro" class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-[#073B4C] mb-4">Structuring for Success & Efficiency</h2>
+            <p class="max-w-3xl mx-auto text-lg text-gray-600">
+                To provide strategic oversight, guidance, and support for all projects within the Centre for Satellite Technology Development (CSTD), ensuring efficient execution, adherence to timelines and budgets, quality delivery, and alignment with CSTD's vision, mission, and strategic objectives. This department will empower engineers, scientists, and other staff to successfully deliver their projects.
+            </p>
+        </section>
+
+        <section id="organogram-overview" class="mb-16">
+            <h3 class="text-2xl font-bold text-center mb-8 text-[#073B4C]">Departmental Structure Overview</h3>
+            <div class="flex flex-col items-center">
+                <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-sm text-center mb-4">
+                    <h4 class="font-bold text-xl text-[#118AB2]">Head of Department (HoD)</h4>
+                    <p class="text-sm text-gray-600">Project Management</p>
+                </div>
+                <div class="w-px h-8 bg-gray-400"></div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
+                    <div class="bg-white rounded-lg shadow-md p-4 text-center border-t-4 border-[#118AB2]">
+                        <h5 class="font-bold text-lg text-[#073B4C]">Planning, Strategy & Coordination Division</h5>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-4 text-center border-t-4 border-[#FF6B6B]">
+                        <h5 class="font-bold text-lg text-[#073B4C]">Execution & Monitoring Division</h5>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-4 text-center border-t-4 border-[#FFD166]">
+                        <h5 class="font-bold text-lg text-[#073B4C]">Closure and Transition Division</h5>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="divisions">
+            <div id="planning" class="mb-12 p-6 bg-white rounded-lg shadow-lg">
+                <h3 class="text-2xl font-bold mb-6 border-l-4 border-[#118AB2] pl-4 text-[#073B4C]">Division 1: Planning, Strategy & Coordination</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="p-4 bg-gray-50 rounded-lg flex flex-col items-center text-center">
+                        <span class="unit-icon text-[#118AB2]">🚀</span>
+                        <h4 class="font-bold text-[#118AB2]">Project Initiation Unit</h4>
+                        <p class="text-sm text-gray-600 mt-2">This unit is responsible for formalizing the start of new projects by defining their objectives, scope, and initial requirements, ensuring a clear foundation for all project endeavors within CSTD.</p>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-lg flex flex-col items-center text-center">
+                        <span class="unit-icon text-[#118AB2]">🤝</span>
+                        <h4 class="font-bold text-[#118AB2]">Stakeholder Engagement Unit</h4>
+                        <p class="text-sm text-gray-600 mt-2">This unit focuses on identifying, analyzing, and engaging with all project stakeholders, ensuring their needs and expectations are understood and managed throughout the project lifecycle to foster collaboration and support.</p>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-lg flex flex-col items-center text-center">
+                        <span class="unit-icon text-[#118AB2]">🛡️</span>
+                        <h4 class="font-bold text-[#118AB2]">Risk and Compliance Unit</h4>
+                        <p class="text-sm text-gray-600 mt-2">This unit proactively identifies, assesses, and develops strategies for mitigating project risks, while also ensuring that all project activities adhere to relevant CSTD policies, national regulations, and international standards.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="execution" class="mb-12 p-6 bg-white rounded-lg shadow-lg">
+                <h3 class="text-2xl font-bold mb-6 border-l-4 border-[#FF6B6B] pl-4 text-[#073B4C]">Division 2: Execution & Monitoring</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+                    <div class="p-4 bg-gray-50 rounded-lg flex flex-col items-center text-center">
+                        <span class="unit-icon text-[#FF6B6B]">📊</span>
+                        <h4 class="font-bold text-[#FF6B6B]">M&E Unit</h4>
+                        <p class="text-sm text-gray-600 mt-2">This unit is responsible for continuously tracking project progress against established plans, monitoring key performance indicators, and evaluating project activities to ensure they are on schedule and within budget.</p>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-lg flex flex-col items-center text-center">
+                        <span class="unit-icon text-[#FF6B6B]">📜</span>
+                        <h4 class="font-bold text-[#FF6B6B]">Contract Management Unit</h4>
+                        <p class="text-sm text-gray-600 mt-2">This unit oversees all contractual agreements related to projects, ensuring terms are met, managing vendor relationships, and facilitating any necessary contract adjustments or dispute resolutions.</p>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-lg flex flex-col items-center text-center">
+                        <span class="unit-icon text-[#FF6B6B]">🔍</span>
+                        <h4 class="font-bold text-[#FF6B6B]">Project Audit Unit</h4>
+                        <p class="text-sm text-gray-600 mt-2">This unit conducts independent assessments of projects to verify adherence to processes, identify areas for improvement, and ensure accountability and transparency in project execution.</p>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-lg flex flex-col items-center text-center">
+                        <span class="unit-icon text-[#FF6B6B]">✔️</span>
+                        <h4 class="font-bold text-[#FF6B6B]">Quality Compliance & Verification Unit</h4>
+                        <p class="text-sm text-gray-600 mt-2">This unit establishes and enforces quality standards for all project deliverables and processes, performing regular checks and reviews to ensure outputs meet the required specifications and CSTD's high standards.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="closure" class="mb-16 p-6 bg-white rounded-lg shadow-lg">
+                <h3 class="text-2xl font-bold mb-6 border-l-4 border-[#FFD166] pl-4 text-[#073B4C]">Division 3: Closure and Transition</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+                    <div class="p-4 bg-gray-50 rounded-lg flex flex-col items-center text-center">
+                        <span class="unit-icon text-[#FFD166]">➡️</span>
+                        <h4 class="font-bold text-[#FFD166]">Operational Transition Unit</h4>
+                        <p class="text-sm text-gray-600 mt-2">This unit manages the seamless handover of completed project deliverables and systems to the relevant operational teams, ensuring that all necessary training, documentation, and support are in place for successful long-term utilization.</p>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-lg flex flex-col items-center text-center">
+                        <span class="unit-icon text-[#FFD166]">👍</span>
+                        <h4 class="font-bold text-[#FFD166]">Stakeholder Sign-off Unit</h4>
+                        <p class="text-sm text-gray-600 mt-2">This unit facilitates the formal acceptance and sign-off of project deliverables and the overall project by all relevant stakeholders, ensuring official closure and acknowledgment of successful completion.</p>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-lg flex flex-col items-center text-center">
+                        <span class="unit-icon text-[#FFD166]">🗄️</span>
+                        <h4 class="font-bold text-[#FFD166]">Archiving Unit</h4>
+                        <p class="text-sm text-gray-600 mt-2">This unit is responsible for the systematic archiving of all project documentation, data, and artifacts upon project completion, ensuring secure storage and easy retrieval for future reference, audits, and knowledge retention.</p>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-lg flex flex-col items-center text-center">
+                        <span class="unit-icon text-[#FFD166]">💡</span>
+                        <h4 class="font-bold text-[#FFD166]">Project Insights & Learning Unit</h4>
+                        <p class="text-sm text-gray-600 mt-2">This unit is dedicated to capturing, analyzing, and disseminating valuable insights and lessons learned from completed projects to foster continuous improvement and enhance future project outcomes across CSTD.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="lifecycle-flow" class="mb-16">
+            <h3 class="text-2xl font-bold text-center mb-8 text-[#073B4C]">The Project Lifecycle Journey</h3>
+            <div class="bg-white rounded-lg shadow-lg p-8">
+                <div class="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0 md:space-x-4">
+                    <div class="text-center">
+                        <div class="card-icon text-[#118AB2]">🗓️</div>
+                        <p class="font-semibold mt-2 text-[#073B4C]">Planning</p>
+                    </div>
+                    <div class="flowchart-arrow hidden md:block">&rarr;</div>
+                    <div class="text-center">
+                        <div class="card-icon text-[#FF6B6B]">⚙️</div>
+                        <p class="font-semibold mt-2 text-[#073B4C]">Execution</p>
+                    </div>
+                    <div class="flowchart-arrow hidden md:block">&rarr;</div>
+                    <div class="text-center">
+                        <div class="card-icon text-[#FFD166]">🏁</div>
+                        <p class="font-semibold mt-2 text-[#073B4C]">Closure</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="kpis" class="mb-8">
+            <h3 class="text-2xl font-bold text-center mb-8 text-[#073B4C]">Measuring Success: Key Performance Indicators</h3>
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <div class="chart-container">
+                    <canvas id="kpiChart"></canvas>
+                </div>
+                <p class="text-center text-gray-600 mt-4">This chart illustrates the department's target goals across key areas of project management, aiming for high performance in all aspects to ensure project success and stakeholder satisfaction.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-[#073B4C] text-white mt-16">
+        <div class="container mx-auto p-6 text-center">
+            <p>&copy; 2025 Centre for Satellite Technology Development (CSTD). All Rights Reserved.</p>
+            <p class="text-sm text-gray-400 mt-2">This infographic provides a visual representation of the Project Management Department's structure and functions.</p>
+        </div>
+    </footer>
+
+    <script>
+        function wrapText(str, maxWidth) {
+            if (str.length <= maxWidth) {
+                return str;
+            }
+            const words = str.split(' ');
+            let lines = [];
+            let currentLine = words[0];
+
+            for (let i = 1; i < words.length; i++) {
+                if (currentLine.length + words[i].length + 1 < maxWidth) {
+                    currentLine += ' ' + words[i];
+                } else {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+
+        const kpiCtx = document.getElementById('kpiChart').getContext('2d');
+        const kpiChart = new Chart(kpiCtx, {
+            type: 'radar',
+            data: {
+                labels: [
+                    'Project Success Rate', 
+                    'Budget Adherence', 
+                    'On-Time Completion', 
+                    'Stakeholder Satisfaction', 
+                    'Risk Mitigation',
+                    'Quality Compliance'
+                ],
+                datasets: [{
+                    label: 'Target Performance',
+                    data: [90, 95, 85, 98, 92, 96],
+                    backgroundColor: 'rgba(17, 138, 178, 0.2)', /* #118AB2 with opacity */
+                    borderColor: 'rgba(17, 138, 178, 1)',
+                    borderWidth: 2,
+                    pointBackgroundColor: 'rgba(17, 138, 178, 1)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgba(17, 138, 178, 1)'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        angleLines: {
+                            display: true
+                        },
+                        suggestedMin: 0,
+                        suggestedMax: 100,
+                        pointLabels: {
+                            font: {
+                                size: 12
+                            },
+                            color: '#333'
+                        },
+                        ticks: {
+                           backdropColor: 'rgba(255, 255, 255, 0.75)'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                const item = tooltipItems[0];
+                                let label = item.chart.data.labels[item.dataIndex];
+                                if (Array.isArray(label)) {
+                                  return label.join(' ');
+                                } else {
+                                  return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSTD Procurement System</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <style>
+      :root {
+        --primary-green: #0d8a53;
+        --secondary-green: #065f39;
+        --primary-red: #dc2626;
+        --accent-light: #f0fdf4;
+      }
+
+      .dashboard-card {
+        border: none;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        background: white;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      }
+
+      .dashboard-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .status-badge {
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+      }
+
+      .progress-tracker {
+        position: relative;
+        margin: 20px 0;
+      }
+
+      .progress-step {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      .step-number {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: var(--primary-green);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 10px;
+      }
+
+      .form-section {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 20px;
+      }
+
+      .vendor-card {
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 15px;
+        transition: all 0.3s ease;
+      }
+
+      .vendor-card:hover {
+        border-color: var(--primary-green);
+        background: var(--accent-light);
+      }
+
+      .timeline {
+        position: relative;
+        padding: 20px 0;
+      }
+
+      .timeline-item {
+        padding: 15px;
+        border-left: 2px solid var(--primary-green);
+        margin-left: 20px;
+        position: relative;
+      }
+
+      .timeline-item::before {
+        content: "";
+        position: absolute;
+        left: -8px;
+        top: 20px;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: var(--primary-green);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container">
+        <a class="navbar-brand" href="final.html">
+          <img src="/api/placeholder/40/40" alt="CSTD Logo" class="me-2" />
+          CSTD Procurement
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="final.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#requests">My Requests</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#vendors">Vendors</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#reports">Reports</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container mt-4">
+      <!-- Dashboard Stats -->
+      <div class="row mb-4">
+        <div class="col-md-3">
+          <div class="dashboard-card card">
+            <div class="card-body">
+              <h6 class="text-muted">Pending Requests</h6>
+              <h3 class="mb-0">12</h3>
+              <small class="text-success">+3 new today</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="dashboard-card card">
+            <div class="card-body">
+              <h6 class="text-muted">Approved Requests</h6>
+              <h3 class="mb-0">45</h3>
+              <small class="text-success">89% approval rate</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="dashboard-card card">
+            <div class="card-body">
+              <h6 class="text-muted">Active Orders</h6>
+              <h3 class="mb-0">8</h3>
+              <small class="text-warning">3 pending delivery</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="dashboard-card card">
+            <div class="card-body">
+              <h6 class="text-muted">Budget Utilized</h6>
+              <h3 class="mb-0">62%</h3>
+              <small class="text-info">₦15.2M remaining</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Content Area -->
+      <div class="row">
+        <!-- Request Forms Section -->
+        <div class="col-md-8">
+          <div class="form-section">
+            <ul class="nav nav-tabs mb-4" id="requestTabs">
+              <li class="nav-item">
+                <a
+                  class="nav-link active"
+                  data-bs-toggle="tab"
+                  href="#newRequest"
+                  >New Request</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#equipment"
+                  >Equipment</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#supplies"
+                  >Supplies</a
+                >
+              </li>
+            </ul>
+
+            <div class="tab-content">
+              <!-- New Request Form -->
+              <div class="tab-pane fade show active" id="newRequest">
+                <form>
+                  <div class="mb-3">
+                    <label class="form-label">Request Type</label>
+                    <select class="form-select">
+                      <option>Office Equipment</option>
+                      <option>IT Hardware</option>
+                      <option>Software</option>
+                      <option>Office Supplies</option>
+                    </select>
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Item Description</label>
+                    <textarea
+                      class="form-control"
+                      rows="3"
+                      placeholder="Provide detailed item description..."
+                    ></textarea>
+                  </div>
+
+                  <div class="row mb-3">
+                    <div class="col-md-6">
+                      <label class="form-label">Quantity</label>
+                      <input type="number" class="form-control" />
+                    </div>
+                    <div class="col-md-6">
+                      <label class="form-label">Estimated Cost</label>
+                      <input type="text" class="form-control" placeholder="₦" />
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Justification</label>
+                    <textarea
+                      class="form-control"
+                      rows="3"
+                      placeholder="Why is this purchase necessary?"
+                    ></textarea>
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Supporting Documents</label>
+                    <input type="file" class="form-control" />
+                  </div>
+
+                  <button type="submit" class="btn btn-primary">
+                    Submit Request
+                  </button>
+                </form>
+              </div>
+
+              <!-- Equipment Request Tracking -->
+              <div class="tab-pane fade" id="equipment">
+                <div class="timeline">
+                  <div class="timeline-item">
+                    <h6>Laptop - Engineering Department</h6>
+                    <span class="status-badge bg-warning">In Progress</span>
+                    <p>Dell XPS 15, 32GB RAM, 1TB SSD</p>
+                    <small class="text-muted">Requested: Jan 5, 2025</small>
+                  </div>
+
+                  <div class="timeline-item">
+                    <h6>Projector System</h6>
+                    <span class="status-badge bg-success">Approved</span>
+                    <p>4K Ultra HD Projector with Screen</p>
+                    <small class="text-muted"
+                      >Delivery Expected: Jan 15, 2025</small
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <!-- Office Supplies Tracking -->
+              <div class="tab-pane fade" id="supplies">
+                <div class="vendor-card">
+                  <div
+                    class="d-flex justify-content-between align-items-center"
+                  >
+                    <h6 class="mb-0">Office Stationery Bundle</h6>
+                    <span class="status-badge bg-info">Processing</span>
+                  </div>
+                  <p class="mb-2">
+                    Monthly supply of paper, pens, and filing materials
+                  </p>
+                  <small class="text-muted">Vendor: Office Solutions Ltd</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tracking & Status Section -->
+        <div class="col-md-4">
+          <div class="dashboard-card card mb-4">
+            <div class="card-body">
+              <h5 class="card-title">Recent Activity</h5>
+              <div class="timeline">
+                <div class="timeline-item">
+                  <small class="text-muted">2 hours ago</small>
+                  <p class="mb-0">New equipment request approved</p>
+                </div>
+                <div class="timeline-item">
+                  <small class="text-muted">5 hours ago</small>
+                  <p class="mb-0">Vendor payment processed</p>
+                </div>
+                <div class="timeline-item">
+                  <small class="text-muted">1 day ago</small>
+                  <p class="mb-0">Supply delivery confirmed</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="dashboard-card card">
+            <div class="card-body">
+              <h5 class="card-title">Approval Pipeline</h5>
+              <div class="progress-tracker">
+                <div class="progress-step">
+                  <div class="step-number">1</div>
+                  <div>Department Head Review</div>
+                </div>
+                <div class="progress-step">
+                  <div class="step-number">2</div>
+                  <div>Finance Approval</div>
+                </div>
+                <div class="progress-step">
+                  <div class="step-number">3</div>
+                  <div>Procurement Processing</div>
+                </div>
+                <div class="progress-step">
+                  <div class="step-number">4</div>
+                  <div>Order Placement</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

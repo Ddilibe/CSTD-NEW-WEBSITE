@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NASRDA Space Regulation Portal</title>
+    <style>
+        :root {
+            --deep-space: #0B0D17;
+            --cosmic-blue: #1E3799;
+            --stellar-blue: #0984E3;
+            --nebula-purple: #6C5CE7;
+            --cosmic-accent: #00A8FF;
+            --moon-gray: #DFE6E9;
+            --mars-red: #D63031;
+            --success-green: #00B894;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--deep-space);
+            color: white;
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: linear-gradient(90deg, var(--deep-space), var(--cosmic-blue));
+            padding: 15px 0;
+            border-bottom: 1px solid var(--cosmic-accent);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo img {
+            height: 60px;
+            border-radius: 50%;
+            background-color: white;
+            padding: 5px;
+        }
+        
+        .logo-text h1 {
+            font-size: 24px;
+            color: white;
+        }
+        
+        .logo-text p {
+            font-size: 14px;
+            color: var(--moon-gray);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 8px 15px;
+            border-radius: 20px;
+        }
+        
+        nav a:hover {
+            background-color: var(--cosmic-accent);
+        }
+        
+        .user-actions {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 8px 20px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background-color: var(--cosmic-accent);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--stellar-blue);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: var(--cosmic-accent);
+            border: 1px solid var(--cosmic-accent);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--cosmic-accent);
+            color: white;
+        }
+        
+        .hero {
+            background-image: url("/api/placeholder/1200/400");
+            background-size: cover;
+            background-position: center;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            margin-bottom: 40px;
+        }
+        
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(11, 13, 23, 0.8), rgba(30, 55, 153, 0.6));
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            max-width: 800px;
+            padding: 0 20px;
+        }
+        
+        .hero h1 {
+            font-size: 36px;
+            margin-bottom: 15px;
+            color: white;
+        }
+        
+        .hero p {
+            font-size: 18px;
+            color: var(--moon-gray);
+            margin-bottom: 25px;
+        }
+        
+        .search-bar {
+            display: flex;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .search-bar input {
+            flex: 1;
+            padding: 12px 20px;
+            border-radius: 5px 0 0 5px;
+            border: none;
+            font-size: 16px;
+        }
+        
+        .search-bar button {
+            padding: 12px 25px;
+            background-color: var(--nebula-purple);
+            color: white;
+            border: none;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        .search-bar button:hover {
+            background-color: var(--cosmic-blue);
+        }
+        
+        main {
+            padding: 40px 0;
+        }
+        
+        .section-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-left: 15px;
+        }
+        
+        .section-title::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 5px;
+            background-color: var(--cosmic-accent);
+            border-radius: 5px;
+        }
+        
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .card {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            border-color: var(--cosmic-accent);
+        }
+        
+        .card-icon {
+            width: 100%;
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(30, 55, 153, 0.3);
+            font-size: 50px;
+            color: var(--cosmic-accent);
+        }
+        
+        .card-content {
+            padding: 20px;
+        }
+        
+        .card h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: var(--cosmic-accent);
+        }
+        
+        .card p {
+            color: var(--moon-gray);
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        
+        .status-section {
+            background-color: rgba(255, 255, 255, 0.03);
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 40px;
+        }
+        
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .status-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            border-left: 5px solid var(--cosmic-blue);
+        }
+        
+        .status-card h3 {
+            font-size: 36px;
+            color: var(--cosmic-accent);
+            margin-bottom: 10px;
+        }
+        
+        .status-card p {
+            color: var(--moon-gray);
+            font-size: 14px;
+        }
+        
+        .status-card.pending {
+            border-color: var(--nebula-purple);
+        }
+        
+        .status-card.approved {
+            border-color: var(--success-green);
+        }
+        
+        .status-card.rejected {
+            border-color: var(--mars-red);
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+            background-color: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .data-table th, .data-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .data-table th {
+            background-color: rgba(30, 55, 153, 0.5);
+            color: white;
+            font-weight: 600;
+        }
+        
+        .data-table tr:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        
+        .status {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+        }
+        
+        .status.pending {
+            background-color: rgba(108, 92, 231, 0.2);
+            color: var(--nebula-purple);
+            border: 1px solid var(--nebula-purple);
+        }
+        
+        .status.approved {
+            background-color: rgba(0, 184, 148, 0.2);
+            color: var(--success-green);
+            border: 1px solid var(--success-green);
+        }
+        
+        .status.rejected {
+            background-color: rgba(214, 48, 49, 0.2);
+            color: var(--mars-red);
+            border: 1px solid var(--mars-red);
+        }
+        
+        .two-column {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .application-form {
+            background-color: rgba(255, 255, 255, 0.03);
+            padding: 30px;
+            border-radius: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: var(--moon-gray);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(255, 255, 255, 0.05);
+            color: white;
+            font-size: 16px;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--cosmic-accent);
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(255, 255, 255, 0.05);
+            color: white;
+            font-size: 16px;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='white' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: calc(100% - 12px) center;
+            padding-right: 35px;
+        }
+        
+        .sidebar {
+            background-color: rgba(255, 255, 255, 0.03);
+            padding: 30px;
+            border-radius: 10px;
+        }
+        
+        .sidebar-section {
+            margin-bottom: 30px;
+        }
+        
+        .sidebar-section h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: var(--cosmic-accent);
+        }
+        
+        .sidebar-list {
+            list-style: none;
+        }
+        
+        .sidebar-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .sidebar-list a {
+            color: var(--moon-gray);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: block;
+        }
+        
+        .sidebar-list a:hover {
+            color: var(--cosmic-accent);
+            padding-left: 5px;
+        }
+        
+        .notification {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.05);
+            margin-bottom: 15px;
+            border-left: 5px solid var(--cosmic-accent);
+        }
+        
+        .notification-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(0, 168, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--cosmic-accent);
+            font-size: 20px;
+        }
+        
+        .notification-content {
+            flex: 1;
+        }
+        
+        .notification h4 {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        
+        .notification p {
+            font-size: 14px;
+            color: var(--moon-gray);
+        }
+        
+        .notification-time {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        footer {
+            background-color: rgba(11, 13, 23, 0.7);
+            padding: 50px 0 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-section h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: var(--cosmic-accent);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: var(--moon-gray);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--cosmic-accent);
+        }
+        
+        .contact-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            color: var(--moon-gray);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 14px;
+        }
+        
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .tab {
+            padding: 12px 20px;
+            cursor: pointer;
+            color: var(--moon-gray);
+            font-weight: 500;
+            position: relative;
+        }
+        
+        .tab.active {
+            color: var(--cosmic-accent);
+        }
+        
+        .tab.active::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -1px;
+            height: 3px;
+            background-color: var(--cosmic-accent);
+            border-radius: 3px 3px 0 0;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 10px;
+            }
+            
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero h1 {
+                font-size: 28px;
+            }
+            
+            .hero p {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <img src="NASRDA LOGO-2.jpg" alt="NASRDA Logo">
+                <div class="logo-text">
+                    <h1>NASRDA</h1>
+                    <p>Space Regulation and Spectrum Management System</p>
+                </div>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#dashboard">Dashboard</a></li>
+                    <li><a href="#applications">Applications</a></li>
+                    <li><a href="#spectrum">Spectrum</a></li>
+                    <li><a href="#compliance">Compliance</a></li>
+                    <li><a href="#resources">Resources</a></li>
+                </ul>
+            </nav>
+            <div class="user-actions">
+                <button class="btn btn-outline">Login</button>
+                <button class="btn btn-primary">Register</button>
+            </div>
+        </div>
+    </header>
+    
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Nigerian Space Regulation Portal</h1>
+            <p>Licensing and Regulatory Management for Space Activities and Satellite Spectrum in Nigeria</p>
+            <div class="search-bar">
+                <input type="text" placeholder="Search applications, regulations, or resources...">
+                <button>Search</button>
+            </div>
+        </div>
+    </section>
+    
+    <main class="container">
+        <section id="services">
+            <h2 class="section-title">Our Services</h2>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-icon">🛰️</div>
+                    <div class="card-content">
+                        <h3>Satellite Licensing</h3>
+                        <p>Apply for licenses to operate satellites in Low Earth Orbit (LEO), Medium Earth Orbit (MEO), or Geostationary Orbit (GEO).</p>
+                        <a href="#" class="btn btn-primary">Apply Now</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon">📡</div>
+                    <div class="card-content">
+                        <h3>Spectrum Management</h3>
+                        <p>Request frequency allocations for satellite communications, ground stations, and related services.</p>
+                        <a href="#" class="btn btn-primary">Request Spectrum</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon">📊</div>
+                    <div class="card-content">
+                        <h3>Compliance Monitoring</h3>
+                        <p>Submit regular compliance reports and monitor your operational status with regulatory requirements.</p>
+                        <a href="#" class="btn btn-primary">Submit Report</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🔍</div>
+                    <div class="card-content">
+                        <h3>Application Tracking</h3>
+                        <p>Track the status of your applications and receive real-time updates on processing milestones.</p>
+                        <a href="#" class="btn btn-primary">Track Status</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="dashboard" class="status-section">
+            <h2 class="section-title">License Status Dashboard</h2>
+            <div class="status-grid">
+                <div class="status-card">
+                    <h3>45</h3>
+                    <p>Total Applications</p>
+                </div>
+                <div class="status-card pending">
+                    <h3>12</h3>
+                    <p>Pending Review</p>
+                </div>
+                <div class="status-card approved">
+                    <h3>28</h3>
+                    <p>Approved Licenses</p>
+                </div>
+                <div class="status-card rejected">
+                    <h3>5</h3>
+                    <p>Rejected Applications</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="applications">
+            <h2 class="section-title">Recent Applications</h2>
+            <div class="tabs">
+                <div class="tab active">All Applications</div>
+                <div class="tab">Pending</div>
+                <div class="tab">Approved</div>
+                <div class="tab">Rejected</div>
+            </div>
+            <div class="tab-content active">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Application ID</th>
+                            <th>Company</th>
+                            <th>License Type</th>
+                            <th>Submission Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>NASRDA-2025-001</td>
+                            <td>Nigerian Communications Ltd</td>
+                            <td>LEO Satellite Constellation</td>
+                            <td>15 Mar 2025</td>
+                            <td><span class="status pending">Under Review</span></td>
+                            <td><a href="#" class="btn btn-outline">View Details</a></td>
+                        </tr>
+                        <tr>
+                            <td>NASRDA-2025-002</td>
+                            <td>AfriSpace Technologies</td>
+                            <td>Ground Station Operation</td>
+                            <td>10 Mar 2025</td>
+                            <td><span class="status approved">Approved</span></td>
+                            <td><a href="#" class="btn btn-outline">View Details</a></td>
+                        </tr>
+                        <tr>
+                            <td>NASRDA-2025-003</td>
+                            <td>Global Satellite Services</td>
+                            <td>Spectrum Allocation (C-Band)</td>
+                            <td>05 Mar 2025</td>
+                            <td><span class="status pending">Technical Review</span></td>
+                            <td><a href="#" class="btn btn-outline">View Details</a></td>
+                        </tr>
+                        <tr>
+                            <td>NASRDA-2025-004</td>
+                            <td>Lagos Space Initiative</td>
+                            <td>Research Satellite</td>
+                            <td>28 Feb 2025</td>
+                            <td><span class="status rejected">Rejected</span></td>
+                            <td><a href="#" class="btn btn-outline">View Details</a></td>
+                        </tr>
+                        <tr>
+                            <td>NASRDA-2025-005</td>
+                            <td>Pan-African Telecom</td>
+                            <td>GEO Satellite</td>
+                            <td>20 Feb 2025</td>
+                            <td><span class="status approved">Approved</span></td>
+                            <td><a href="#" class="btn btn-outline">View Details</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        
+        <section id="spectrum">
+            <h2 class="section-title">Spectrum Management</h2>
+            <div class="two-column">
+                <div class="application-form">
+                    <h3 style="color: var(--cosmic-accent); margin-bottom: 20px;">New License Application</h3>
+                    <form>
+                        <div class="form-group">
+                            <label for="company">Company/Organization Name</label>
+                            <input type="text" id="company" class="form-control" placeholder="Enter legal entity name">
+                        </div>
+                        <div class="form-group">
+                            <label for="license-type">License Type</label>
+                            <select id="license-type" class="form-select">
+                                <option value="">Select license type</option>
+                                <option value="leo">LEO Satellite</option>
+                                <option value="meo">MEO Satellite</option>
+                                <option value="geo">GEO Satellite</option>
+                                <option value="ground">Ground Station</option>
+                                <option value="spectrum">Spectrum Allocation</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="frequency">Requested Frequency Band</label>
+                            <select id="frequency" class="form-select">
+                                <option value="">Select frequency band</option>
+                                <option value="c-band">C-Band (4-8 GHz)</option>
+                                <option value="ku-band">Ku-Band (12-18 GHz)</option>
+                                <option value="ka-band">Ka-Band (26-40 GHz)</option>
+                                <option value="l-band">L-Band (1-2 GHz)</option>
+                                <option value="x-band">X-Band (8-12 GHz)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="purpose">Purpose/Application</label>
+                            <textarea id="purpose" class="form-control" rows="4" placeholder="Describe the intended use of the satellite/frequency"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="technical-specs">Technical Specifications</label>
+                            <textarea id="technical-specs" class="form-control" rows="4" placeholder="Provide detailed technical specifications"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="documents">Supporting Documents</label>
+                            <input type="file" id="documents" class="form-control">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit Application</button>
+                    </form>
+                </div>
+                
+                <div class="sidebar">
+                    <div class="sidebar-section">
+                        <h3>Application Guidelines</h3>
+                        <ul class="sidebar-list">
+                            <li><a href="#">Licensing Requirements</a></li>
+                            <li><a href="#">Fee Structure</a></li>
+                            <li><a href="#">Processing Timeline</a></li>
+                            <li><a href="#">Technical Standards</a></li>
+                            <li><a href="#">Compliance Obligations</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="sidebar-section">
+                        <h3>Recent Notifications</h3>
+                        <div class="notification">
+                            <div class="notification-icon">📢</div>
+                            <div class="notification-content">
+                                <h4>New Frequency Allocation Policy</h4>
+                                <p>Updated guidelines for Ka-band spectrum allocation</p>
+                                <span class="notification-time">2 days ago</span>
+                            </div>
+                        </div>
+                        <div class="notification">
+                            <div class="notification-icon">📢</div>
+                            <div class="notification-content">
+                                <h4>Application Fee Update</h4>
+                                <p>Revised fee structure effective April 15, 2025</p>
+                                <span class="notification-time">1 week ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>About NASRDA</h3>
+                    <p style="color: var(--moon-gray); margin-bottom: 15px;">The National Space Research and Development Agency (NASRDA) is Nigeria's space agency responsible for developing and implementing space science and technology in Nigeria.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Services</a></li>
+                        <li><a href="#">Regulations</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Resources</h3>
+                    <ul class="

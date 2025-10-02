@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprehensive CMMS Dashboard</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-green: #0f766e;
+            --light-green: #34d399;
+            --warning-yellow: #fbbf24;
+            --danger-red: #dc2626;
+            --white: #ffffff;
+        }
+
+        /* [Previous styles remain the same...] */
+        [Previous CSS content remains identical to the previous artifact...]
+    </style>
+</head>
+<body>
+    <aside class="cmms-sidebar">
+        <div class="p-3">
+            <div class="d-flex align-items-center mb-4">
+                <img src="/api/placeholder/80/80" alt="Logo" width="80" height="80" class="me-2">
+                <h1 class="h5 mb-0" style="color: var(--primary-green);">Facility CMMS</h1>
+            </div>
+
+            <nav class="nav flex-column nav-pills">
+                <a class="nav-link active" href="#">
+                    <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+                </a>
+                <a class="nav-link" href="#">
+                    <i class="fas fa-building me-2"></i> Asset Management
+                </a>
+                <a class="nav-link" href="#">
+                    <i class="fas fa-clipboard-list me-2"></i> Work Orders
+                </a>
+                <a class="nav-link" href="#">
+                    <i class="fas fa-calendar-check me-2"></i> Maintenance
+                </a>
+                <a class="nav-link" href="#">
+                    <i class="fas fa-chart-bar me-2"></i> Reports
+                </a>
+                <a class="nav-link" href="#">
+                    <i class="fas fa-cog me-2"></i> Settings
+                </a>
+            </nav>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold" style="color: var(--primary-green);">Facility Management Dashboard</h2>
+            <div class="d-flex gap-3">
+                <button class="btn btn-primary">
+                    <i class="fas fa-plus me-2"></i> New Work Order
+                </button>
+                <div class="input-group" style="width: 300px">
+                    <input type="search" class="form-control" placeholder="Search assets...">
+                    <button class="btn btn-outline-primary">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Updated Stats Cards -->
+        <div class="row g-4 mb-4">
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <h3 class="h6 text-muted mb-3">Total Monitored Assets</h3>
+                    <h4 class="display-6 fw-bold mb-3">387</h4>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 92%"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <h3 class="h6 text-muted mb-3">Pending Work Orders</h3>
+                    <h4 class="display-6 fw-bold mb-3">42</h4>
+                    <div class="d-flex gap-2">
+                        <span class="badge bg-danger">8 Critical</span>
+                        <span class="badge bg-warning">18 Scheduled</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <h3 class="h6 text-muted mb-3">Maintenance Compliance</h3>
+                    <h4 class="display-6 fw-bold mb-2">95%</h4>
+                    <div style="color: var(--light-green)">
+                        <i class="fas fa-arrow-up me-1"></i>
+                        <span>3% improvement</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <h3 class="h6 text-muted mb-3">System Health</h3>
+                    <div class="d-flex flex-column gap-2">
+                        <div class="d-flex align-items-center">
+                            <span class="status-indicator status-operational me-2"></span>
+                            Optimal (80%)
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <span class="status-indicator status-maintenance me-2"></span>
+                            Needs Attention (15%)
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <span class="status-indicator status-critical me-2"></span>
+                            Critical (5%)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-8">
+                <div class="stat-card">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h3 class="h5 mb-0">Facility Assets Overview</h3>
+                        <select class="form-select w-auto">
+                            <option>All Categories</option>
+                            <option>HVAC & Cooling</option>
+                            <option>Power Systems</option>
+                            <option>Safety Equipment</option>
+                            <option>IT Infrastructure</option>
+                            <option>Building Systems</option>
+                            <option>Laboratory Equipment</option>
+                            <option>Utilities</option>
+                        </select>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Asset Name</th>
+                                    <th>Category</th>
+                                    <th>Location</th>
+                                    <th>Status</th>
+                                    <th>Next Maintenance</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Main HVAC System</td>
+                                    <td>HVAC & Cooling</td>
+                                    <td>Building A</td>
+                                    <td><span class="badge bg-success">Operational</span></td>
+                                    <td>2024-03-25</td>
+                                </tr>
+                                <tr>
+                                    <td>Backup Generator #2</td>
+                                    <td>Power Systems</td>
+                                    <td>Power House</td>
+                                    <td><span class="badge bg-warning">Maintenance Due</span></td>
+                                    <td>2024-03-18</td>
+                                </tr>
+                                <tr>
+                                    <td>Fire Suppression System</td>
+                                    <td>Safety Equipment</td>
+                                    <td>All Floors</td>
+                                    <td><span class="badge bg-success">Operational</span></td>
+                                    <td>2024-04-01</td>
+                                </tr>
+                                <tr>
+                                    <td>Server Room AC</td>
+                                    <td>HVAC & Cooling</td>
+                                    <td>IT Center</td>
+                                    <td><span class="badge bg-danger">Critical</span></td>
+                                    <td>Immediate</td>
+                                </tr>
+                                <tr>
+                                    <td>Water Treatment Unit</td>
+                                    <td>Utilities</td>
+                                    <td>Basement</td>
+                                    <td><span class="badge bg-success">Operational</span></td>
+                                    <td>2024-03-30</td>
+                                </tr>
+                                <tr>
+                                    <td>Elevator System #1</td>
+                                    <td>Building Systems</td>
+                                    <td>Main Building</td>
+                                    <td><span class="badge bg-warning">Maintenance Due</span></td>
+                                    <td>2024-03-20</td>
+                                </tr>
+                                <tr>
+                                    <td>Network Infrastructure</td>
+                                    <td>IT Infrastructure</td>
+                                    <td>All Floors</td>
+                                    <td><span class="badge bg-success">Operational</span></td>
+                                    <td>2024-04-05</td>
+                                </tr>
+                                <tr>
+                                    <td>Spectrometer XRF-3000</td>
+                                    <td>Laboratory Equipment</td>
+                                    <td>Lab 3</td>
+                                    <td><span class="badge bg-warning">Calibration Due</span></td>
+                                    <td>2024-03-19</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="stat-card mb-4">
+                    <h3 class="h5 mb-3">Priority Maintenance</h3>
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-outline-primary">
+                            <i class="fas fa-exclamation-triangle me-2"></i> Server Room AC Repair
+                        </button>
+                        <button class="btn btn-outline-primary">
+                            <i class="fas fa-tools me-2"></i> Elevator Maintenance
+                        </button>
+                        <button class="btn btn-outline-primary">
+                            <i class="fas fa-flask me-2"></i> Lab Equipment Calibration
+                        </button>
+                    </div>
+                </div>
+
+                <div class="stat-card mb-4">
+                    <h3 class="h5 mb-3">Upcoming Inspections</h3>
+                    <div class="list-group list-group-flush">
+                        <div class="list-group-item border-0 px-0">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <p class="mb-0" style="color: var(--primary-green);">Fire Safety Inspection</p>
+                                    <small class="text-muted">All Buildings</small>
+                                </div>
+                                <small class="text-muted">Mar 25</small>
+                            </div>
+                        </div>
+                        <div class="list-group-item border-0 px-0">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <p class="mb-0" style="color: var(--primary-green);">Environmental Compliance</p>
+                                    <small class="text-muted">Waste Management</small>
+                                </div>
+                                <small class="text-muted">Mar 28</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <h3 class="h5 mb-3">Recent Activities</h3>
+                    <div class="list-group list-group-flush">
+                        <div class="list-group-item border-0 px-0">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <p class="mb-0" style="color: var(--primary-green);">UPS Battery Replacement</p>
+                                    <small class="text-muted">Server Room - Complete</small>
+                                </div>
+                                <small class="text-muted">1h ago</small>
+                            </div>
+                        </div>
+                        <div class="list-group-item border-0 px-0">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <p class="mb-0" style="color: var(--primary-green);">Air Quality Test</p>
+                                    <small class="text-muted">Lab Areas - In Progress</small>
+                                </div>
+                                <small class="text-muted">3h ago</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

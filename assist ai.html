@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NASRDA Assistive Technology Platform</title>
+    <style>
+      :root {
+        --primary-blue: #0052a5;
+        --accent-red: #c8102e;
+        --accent-yellow: #ffde59;
+        --accent-green: #007a33;
+        --light-gray: #f0f2f5;
+        --dark-gray: #333333;
+        --white: #ffffff;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: var(--light-gray);
+        color: var(--dark-gray);
+      }
+
+      .header {
+        background-color: var(--primary-blue);
+        color: var(--white);
+        padding: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      }
+
+      .logo-container {
+        display: flex;
+        align-items: center;
+      }
+
+      .logo {
+        height: 60px;
+        margin-right: 20px;
+      }
+
+      .header-title {
+        font-size: 1.5rem;
+        margin: 0;
+      }
+
+      .user-profile {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: var(--accent-yellow);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+      }
+
+      .container {
+        padding: 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .dashboard {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        margin-bottom: 20px;
+      }
+
+      .panel {
+        background-color: var(--white);
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .panel-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        color: var(--primary-blue);
+      }
+
+      .panel-title {
+        font-size: 1.2rem;
+        margin: 0;
+      }
+
+      .panel-content {
+        margin-bottom: 15px;
+      }
+
+      .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 15px;
+      }
+
+      .feature-card {
+        background-color: var(--light-gray);
+        border-radius: 8px;
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .feature-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 10px;
+        font-size: 24px;
+        color: var(--white);
+      }
+
+      .feature-blue {
+        background-color: var(--primary-blue);
+      }
+
+      .feature-red {
+        background-color: var(--accent-red);
+      }
+
+      .feature-green {
+        background-color: var(--accent-green);
+      }
+
+      .feature-yellow {
+        background-color: var(--accent-yellow);
+        color: var(--dark-gray);
+      }
+
+      .feature-title {
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+
+      .feature-description {
+        font-size: 0.9rem;
+        color: #666;
+      }
+
+      .map-container {
+        height: 400px;
+        background-color: #ddd;
+        border-radius: 8px;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .map {
+        width: 100%;
+        height: 100%;
+        background-image: url("/api/placeholder/600/400");
+        background-size: cover;
+        background-position: center;
+      }
+
+      .map-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .map-controls {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        background-color: var(--white);
+        border-radius: 8px;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .map-button {
+        background-color: var(--primary-blue);
+        color: var(--white);
+        border: none;
+        border-radius: 4px;
+        padding: 8px 12px;
+        cursor: pointer;
+        font-size: 0.9rem;
+      }
+
+      .stats-container {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
+        margin-bottom: 20px;
+      }
+
+      .stat-card {
+        background-color: var(--white);
+        border-radius: 8px;
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .stat-value {
+        font-size: 1.8rem;
+        font-weight: bold;
+        margin: 10px 0;
+      }
+
+      .stat-label {
+        font-size: 0.9rem;
+        color: #666;
+        text-align: center;
+      }
+
+      .progress-container {
+        width: 100%;
+        height: 10px;
+        background-color: var(--light-gray);
+        border-radius: 5px;
+        overflow: hidden;
+        margin: 8px 0;
+      }
+
+      .progress-bar {
+        height: 100%;
+        background-color: var(--accent-green);
+        width: 90%;
+      }
+
+      .status-badge {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 15px;
+        font-size: 0.8rem;
+        font-weight: bold;
+      }
+
+      .status-active {
+        background-color: var(--accent-green);
+        color: var(--white);
+      }
+
+      .status-warning {
+        background-color: var(--accent-yellow);
+        color: var(--dark-gray);
+      }
+
+      .status-alert {
+        background-color: var(--accent-red);
+        color: var(--white);
+      }
+
+      .voice-interface {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        background-color: var(--primary-blue);
+        border-radius: 30px;
+        padding: 10px 20px;
+        margin-top: 20px;
+        color: var(--white);
+      }
+
+      .voice-button {
+        background-color: var(--accent-red);
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 20px;
+        color: var(--white);
+      }
+
+      .voice-text {
+        flex-grow: 1;
+        font-style: italic;
+      }
+
+      .footer {
+        background-color: var(--primary-blue);
+        color: var(--white);
+        text-align: center;
+        padding: 20px;
+        margin-top: 40px;
+      }
+
+      .footer-links {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 10px;
+      }
+
+      .footer-links a {
+        color: var(--accent-yellow);
+        text-decoration: none;
+      }
+
+      .footer-links a:hover {
+        text-decoration: underline;
+      }
+
+      @media (max-width: 768px) {
+        .stats-container {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .header-title {
+          font-size: 1.2rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .stats-container {
+          grid-template-columns: 1fr;
+        }
+
+        .user-profile span {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header Section -->
+    <div class="header">
+      <div class="logo-container">
+        <img src="images.png" alt="Logo" class="logo" />
+        <h1 class="header-title">NASRDA Assistive Technology Platform</h1>
+      </div>
+      <div class="user-profile">
+        <span>Welcome, Administrator</span>
+        <div class="avatar">A</div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+      <!-- Project Status Overview -->
+      <div class="panel">
+        <div class="panel-header">
+          <h2 class="panel-title">Project Status</h2>
+          <div class="status-badge status-active">90% Complete</div>
+        </div>
+        <div class="panel-content">
+          <p>
+            AI-powered Assistive Technology Platform with Satellite Data
+            Integration
+          </p>
+          <div class="progress-container">
+            <div class="progress-bar"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Statistics Section -->
+      <div class="stats-container">
+        <div class="stat-card">
+          <div class="stat-value">2025</div>
+          <div class="stat-label">Registered Users</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">18</div>
+          <div class="stat-label">Voice Commands Processed</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">321</div>
+          <div class="stat-label">Navigation Assists</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">26</div>
+          <div class="stat-label">Emergency Responses</div>
+        </div>
+      </div>
+
+      <!-- Main Dashboard -->
+      <div class="dashboard">
+        <!-- Satellite Data Integration Panel -->
+        <div class="panel">
+          <div class="panel-header">
+            <h3 class="panel-title">Satellite Data Integration</h3>
+            <div class="status-badge status-active">Live</div>
+          </div>
+          <div class="map-container">
+            <div class="map"></div>
+            <div class="map-controls">
+              <button class="map-button">Environmental Data</button>
+              <button class="map-button">Accessibility Map</button>
+              <button class="map-button">Emergency Services</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Voice Assistant Panel -->
+        <div class="panel">
+          <div class="panel-header">
+            <h3 class="panel-title">Voice Assistant</h3>
+            <div class="status-badge status-active">Active</div>
+          </div>
+          <div class="panel-content">
+            <p>
+              The AI voice assistant is designed to understand natural language
+              commands and provide personalized assistance based on user
+              preferences and needs.
+            </p>
+            <div class="voice-interface">
+              <button class="voice-button">🎤</button>
+              <div class="voice-text">"How can I assist you today?"</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Core Features Section -->
+      <div class="panel">
+        <div class="panel-header">
+          <h3 class="panel-title">Core Features</h3>
+        </div>
+        <div class="feature-grid">
+          <div class="feature-card">
+            <div class="feature-icon feature-blue">🗣️</div>
+            <div class="feature-title">Advanced Voice Recognition</div>
+            <div class="feature-description">
+              Utilizes AI to understand diverse speech patterns, accents, and
+              speech impairments
+            </div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon feature-red">🧠</div>
+            <div class="feature-title">Natural Language Processing</div>
+            <div class="feature-description">
+              Interprets complex commands and contextual conversations
+            </div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon feature-green">📡</div>
+            <div class="feature-title">Satellite Data Analysis</div>
+            <div class="feature-description">
+              Real-time environmental monitoring and accessibility mapping
+            </div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon feature-yellow">🔄</div>
+            <div class="feature-title">Machine Learning</div>
+            <div class="feature-description">
+              Adapts to user preferences and improves over time
+            </div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon feature-blue">🚨</div>
+            <div class="feature-title">Emergency Response</div>
+            <div class="feature-description">
+              Fall detection and immediate alert system for caregivers
+            </div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon feature-red">🧭</div>
+            <div class="feature-title">Navigation Assistance</div>
+            <div class="feature-description">
+              Accessible route planning with real-time obstacle detection
+            </div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon feature-green">👥</div>
+            <div class="feature-title">Community Integration</div>
+            <div class="feature-description">
+              Connects users with local support services and accessibility
+              resources
+            </div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon feature-yellow">⚙️</div>
+            <div class="feature-title">Personalized Settings</div>
+            <div class="feature-description">
+              Customizable interface to accommodate various disabilities
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- System Monitoring -->
+      <div class="panel">
+        <div class="panel-header">
+          <h3 class="panel-title">System Monitoring</h3>
+        </div>
+        <div class="panel-content">
+          <div class="stats-container">
+            <div class="stat-card">
+              <div class="stat-label">AI Platform</div>
+              <div class="stat-value" style="color: var(--accent-green)">
+                98%
+              </div>
+              <div class="stat-label">Operational</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Satellite Data Feed</div>
+              <div class="stat-value" style="color: var(--accent-green)">
+                96%
+              </div>
+              <div class="stat-label">Uptime</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Response Time</div>
+              <div class="stat-value" style="color: var(--accent-green)">
+                0.8s
+              </div>
+              <div class="stat-label">Average</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Data Processing</div>
+              <div class="stat-value" style="color: var(--accent-yellow)">
+                83%
+              </div>
+              <div class="stat-label">Efficiency</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project Timeline -->
+      <div class="panel">
+        <div class="panel-header">
+          <h3 class="panel-title">Project Timeline</h3>
+        </div>
+        <div class="panel-content">
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              position: relative;
+              margin: 30px 0;
+            "
+          >
+            <div
+              style="
+                width: 100%;
+                height: 4px;
+                background-color: var(--light-gray);
+                position: absolute;
+                top: 15px;
+              "
+            ></div>
+            <div
+              style="
+                width: 90%;
+                height: 4px;
+                background-color: var(--accent-green);
+                position: absolute;
+                top: 15px;
+              "
+            ></div>
+
+            <div
+              style="
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                position: relative;
+                z-index: 1;
+              "
+            >
+              <div
+                style="
+                  width: 30px;
+                  height: 30px;
+                  background-color: var(--accent-green);
+                  border-radius: 50%;
+                "
+              ></div>
+              <p style="margin: 10px 0 0 0"><strong>Initiation</strong></p>
+              <p style="margin: 5px 0 0 0; font-size: 0.8rem; color: #666">
+                Month 1-2
+              </p>
+            </div>
+
+            <div
+              style="
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                position: relative;
+                z-index: 1;
+              "
+            >
+              <div
+                style="
+                  width: 30px;
+                  height: 30px;
+                  background-color: var(--accent-green);
+                  border-radius: 50%;
+                "
+              ></div>
+              <p style="margin: 10px 0 0 0"><strong>Development</strong></p>
+              <p style="margin: 5px 0 0 0; font-size: 0.8rem; color: #666">
+                Month 3-4
+              </p>
+            </div>
+
+            <div
+              style="
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                position: relative;
+                z-index: 1;
+              "
+            >
+              <div
+                style="
+                  width: 30px;
+                  height: 30px;
+                  background-color: var(--accent-green);
+                  border-radius: 50%;
+                "
+              ></div>
+              <p style="margin: 10px 0 0 0"><strong>Testing</strong></p>
+              <p style="margin: 5px 0 0 0; font-size: 0.8rem; color: #666">
+                Month 5
+              </p>
+            </div>
+
+            <div
+              style="
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                position: relative;
+                z-index: 1;
+              "
+            >
+              <div
+                style="
+                  width: 30px;
+                  height: 30px;
+                  background-color: var(--accent-yellow);
+                  border-radius: 50%;
+                "
+              ></div>
+              <p style="margin: 10px 0 0 0"><strong>Completion</strong></p>
+              <p style="margin: 5px 0 0 0; font-size: 0.8rem; color: #666">
+                Month 6
+              </p>
+            </div>
+          </div>
+          <p>
+            <strong>Current Phase:</strong> Final Implementation and User
+            Testing
+          </p>
+        </div>
+      </div>
+
+      <!-- Remaining Tasks -->
+      <div class="panel">
+        <div class="panel-header">
+          <h3 class="panel-title">Remaining Tasks</h3>
+          <div class="status-badge status-warning">10% Remaining</div>
+        </div>
+        <div class="panel-content">
+          <ul>
+            <li>Final calibration of voice recognition for regional accents</li>
+            <li>
+              Integration of additional satellite data sources from PlanetLabs
+            </li>
+            <li>
+              Completion of extensive user acceptance testing with diverse user
+              groups
+            </li>
+            <li>Documentation finalization for handover</li>
+            <li>
+              Training materials development for end-users and administrators
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Section -->
+    <div class="footer">
+      <p>© 2025 Centre for Satellite Technology Development, NASRDA</p>
+      <div class="footer-links">
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Use</a>
+      </div>
+    </div>
+  </body>
+</html>

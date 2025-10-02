@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Asset Management System</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary-blue: #1a56db;
+        --status-red: #dc2626;
+        --status-yellow: #f59e0b;
+        --status-green: #10b981;
+        --status-purple: #8b5cf6;
+      }
+
+      .asset-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s;
+      }
+
+      .asset-card:hover {
+        transform: translateY(-3px);
+      }
+
+      .status-indicator {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        display: inline-block;
+      }
+
+      .timeline-bar {
+        height: 8px;
+        border-radius: 4px;
+        background: #e5e7eb;
+        position: relative;
+      }
+
+      .maintenance-marker {
+        width: 4px;
+        height: 16px;
+        background: var(--status-yellow);
+        position: absolute;
+        cursor: help;
+      }
+
+      .form-section {
+        background: rgba(241, 245, 249, 0.5);
+        border-radius: 12px;
+        backdrop-filter: blur(10px);
+      }
+
+      #assetChart {
+        max-height: 400px;
+      }
+
+      .interactive-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+      }
+    </style>
+  </head>
+  <body class="bg-light">
+    <div class="container py-4">
+      <!-- Header Section -->
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="fw-bold text-primary">
+          <i class="fas fa-cube me-2"></i>Asset Inventory Manager
+        </h1>
+        <button
+          class="btn btn-primary"
+          data-bs-toggle="modal"
+          data-bs-target="#addAssetModal"
+        >
+          <i class="fas fa-plus me-2"></i>Add New Asset
+        </button>
+      </div>
+
+      <!-- Statistics Cards -->
+      <div class="row g-4 mb-4">
+        <div class="col-md-3">
+          <div class="asset-card p-3">
+            <h6 class="text-muted">Total Assets</h6>
+            <h2 class="fw-bold" id="totalAssets">0</h2>
+          </div>
+        </div>
+        <div class="col-md-9">
+          <div class="asset-card p-3">
+            <div class="row g-3">
+              <div class="col">
+                <div class="d-flex align-items-center">
+                  <span class="status-indicator bg-success me-2"></span>
+                  <div>
+                    <div class="text-muted small">Operational</div>
+                    <div class="fw-bold" id="operationalCount">0</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="d-flex align-items-center">
+                  <span class="status-indicator bg-warning me-2"></span>
+                  <div>
+                    <div class="text-muted small">Maintenance</div>
+                    <div class="fw-bold" id="maintenanceCount">0</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="d-flex align-items-center">
+                  <span class="status-indicator bg-danger me-2"></span>
+                  <div>
+                    <div class="text-muted small">Damaged</div>
+                    <div class="fw-bold" id="damagedCount">0</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="d-flex align-items-center">
+                  <span class="status-indicator bg-purple me-2"></span>
+                  <div>
+                    <div class="text-muted small">Retired</div>
+                    <div class="fw-bold" id="retiredCount">0</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Asset Visualization -->
+      <div class="asset-card p-4 mb-4">
+        <canvas id="assetChart"></canvas>
+      </div>
+
+      <!-- Add Asset Modal -->
+      <div class="modal fade" id="addAssetModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Register New Asset</h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+              ></button>
+            </div>
+            <div class="modal-body form-section p-4">
+              <form id="assetForm">
+                <div class="row g-4">
+                  <div class="col-md-6">
+                    <label class="form-label">Asset Name</label>
+                    <input type="text" class="form-control" required />
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">Asset Type</label>
+                    <select class="form-select" required>
+                      <option value="">Select Type</option>
+                      <option>HVAC System</option>
+                      <option>IT Equipment</option>
+                      <option>Laboratory Device</option>
+                      <option>Power System</option>
+                      <option>Safety Equipment</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">Manufacturing Date</label>
+                    <input
+                      type="date"
+                      class="form-control datepicker"
+                      required
+                    />
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">Maintenance Frequency</label>
+                    <select class="form-select" required>
+                      <option value="">Select Frequency</option>
+                      <option>Monthly</option>
+                      <option>Quarterly</option>
+                      <option>Biannual</option>
+                      <option>Annual</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">Expiry Date</label>
+                    <input type="date" class="form-control datepicker" />
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">Current Status</label>
+                    <select class="form-select" required>
+                      <option value="">Select Status</option>
+                      <option>Operational</option>
+                      <option>Under Maintenance</option>
+                      <option>Damaged</option>
+                      <option>Retired</option>
+                    </select>
+                  </div>
+                  <div class="col-12">
+                    <label class="form-label">Maintenance Timeline</label>
+                    <div class="timeline-bar mt-2">
+                      <div
+                        class="maintenance-marker"
+                        style="left: 25%"
+                        title="Last maintenance: 15 Mar 2024"
+                      ></div>
+                      <div
+                        class="maintenance-marker"
+                        style="left: 50%"
+                        title="Scheduled maintenance: 15 Jun 2024"
+                      ></div>
+                      <div
+                        class="maintenance-marker"
+                        style="left: 75%"
+                        title="Scheduled maintenance: 15 Sep 2024"
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="mt-4 d-flex justify-content-end gap-2">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                  >
+                    Cancel
+                  </button>
+                  <button type="submit" class="btn btn-primary">
+                    Save Asset
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Asset Grid -->
+      <div class="interactive-grid mt-4">
+        <!-- Asset cards will be dynamically inserted here -->
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      // Initialize date pickers
+      flatpickr(".datepicker", {
+        dateFormat: "Y-m-d",
+        allowInput: true,
+      });
+
+      // Chart initialization
+      const ctx = document.getElementById("assetChart").getContext("2d");
+      const assetChart = new Chart(ctx, {
+        type: "doughnut",
+        data: {
+          labels: ["Operational", "Maintenance", "Damaged", "Retired"],
+          datasets: [
+            {
+              data: [0, 0, 0, 0],
+              backgroundColor: ["#10B981", "#F59E0B", "#DC2626", "#8B5CF6"],
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: "bottom" },
+            tooltip: { enabled: true },
+          },
+        },
+      });
+
+      // Form handling
+      document
+        .getElementById("assetForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          // Add asset logic here
+          updateStatistics();
+          $("#addAssetModal").modal("hide");
+        });
+
+      function updateStatistics() {
+        // Demo data update
+        document.getElementById("totalAssets").textContent = "45";
+        document.getElementById("operationalCount").textContent = "32";
+        document.getElementById("maintenanceCount").textContent = "8";
+        document.getElementById("damagedCount").textContent = "3";
+        document.getElementById("retiredCount").textContent = "2";
+
+        assetChart.data.datasets[0].data = [32, 8, 3, 2];
+        assetChart.update();
+      }
+
+      // Initial demo data
+      updateStatistics();
+    </script>
+  </body>
+</html>

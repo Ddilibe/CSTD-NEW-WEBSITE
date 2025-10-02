@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ground Station Control</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: rgb(14, 165, 233);
+            --secondary: rgb(30, 41, 59);
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: rgb(15, 23, 42);
+            color: white;
+        }
+        .sidebar {
+            transition: width 0.3s;
+            width: 260px;
+            background: var(--secondary);
+        }
+        .sidebar.collapsed {
+            width: 64px;
+        }
+        .main-content {
+            transition: margin-left 0.3s;
+            margin-left: 260px;
+        }
+        .main-content.expanded {
+            margin-left: 64px;
+        }
+        .satellite-status {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 12px;
+            margin: 8px 0;
+        }
+        .canvas-container {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .gradient-text {
+            background: linear-gradient(to right, rgb(56, 189, 248), rgb(59, 130, 246));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="sidebar fixed h-full z-20">
+            <div class="p-4">
+                <button id="toggleSidebar" class="p-2 hover:bg-gray-700 rounded-full">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M15 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Mission Timer -->
+            <div class="p-4">
+                <div class="bg-gray-800 rounded-lg p-3">
+                    <div id="missionTimer" class="font-mono text-cyan-400">T+00:00:00</div>
+                </div>
+            </div>
+
+            <!-- Satellite Status -->
+            <div class="satellite-status">
+                <div class="flex items-center justify-between">
+                    <span>SAR-1</span>
+                    <span class="px-2 py-1 rounded bg-green-400/20 text-green-400 text-xs">ACTIVE</span>
+                </div>
+                <div class="text-xs text-gray-400 mt-1">Orbit: MEO-SSO (3200km)</div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main id="mainContent" class="main-content flex-1">
+            <header class="bg-slate-800 p-4 border-b border-slate-700">
+                <div class="flex items-center justify-between">
+                    <h1 class="text-2xl font-bold gradient-text">NASRDA Ground Station Control</h1>
+                    <div class="flex items-center gap-4">
+                        <button class="relative p-2 hover:bg-gray-700 rounded-full">
+                            <span class="absolute -top-1 -right-1 bg-red-500 text-xs rounded-full w-4 h-4 flex items-center justify-center">3</span>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="12" y1="8" x2="12" y2="12"/>
+                                <line x1="12" y1="16" x2="12" y2="16"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <div class="p-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="canvas-container p-4">
+                    <h2 class="text-xl font-bold mb-4">SAR Satellite View</h2>
+                    <canvas id="sarCanvas" class="w-full h-96 rounded-lg"></canvas>
+                </div>
+                <div class="canvas-container p-4">
+                    <h2 class="text-xl font-bold mb-4">MultiSpec Satellite View</h2>
+                    <canvas id="msCanvas" class="w-full h-96 rounded-lg"></canvas>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Sidebar Toggle
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('mainContent');
+        const toggleButton = document.getElementById('toggleSidebar');
+
+        toggleButton.addEventListener('click', () => {
+            sidebar.classList.toggle('collapsed');
+            mainContent.classList.toggle('expanded');
+        });
+
+        // Mission Timer
+        function updateTimer() {
+            const timerElement = document.getElementById('missionTimer');
+            const now = new Date();
+            timerElement.textContent = `T+${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`;
+        }
+        setInterval(updateTimer, 1000);
+        updateTimer();
+
+        // Canvas Setup
+        function setupCanvas(canvasId, type) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            
+            function resizeCanvas() {
+                canvas.width = canvas.offsetWidth;
+                canvas.height = canvas.offsetHeight;
+            }
+            
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+
+            const earth = {
+                x: canvas.width / 2,
+                y: canvas.height * 0.6,
+                radius: 50
+            };
+
+            let angle = 0;
+            const orbitRadius = type === 'SAR' ? 180 : 220;
+            const speed = type === 'SAR' ? 0.003 : 0.002;
+
+            function animate() {
+                ctx.fillStyle = '#0f172a';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // Draw Earth
+                const gradient = ctx.createRadialGradient(
+                    earth.x, earth.y, 0,
+                    earth.x, earth.y, earth.radius
+                );
+                gradient.addColorStop(0, '#4299e1');
+                gradient.addColorStop(1, '#2b6cb0');
+                
+                ctx.beginPath();
+                ctx.arc(earth.x, earth.y, earth.radius, 0, Math.PI * 2);
+                ctx.fillStyle = gradient;
+                ctx.fill();
+
+                // Draw Satellite
+                angle += speed;
+                const satX = earth.x + Math.cos(angle) * orbitRadius;
+                const satY = earth.y + Math.sin(angle) * orbitRadius;
+
+                ctx.fillStyle = '#fff';
+                ctx.fillRect(satX - 5, satY - 5, 10, 10);
+
+                // Draw Orbit Path
+                ctx.beginPath();
+                ctx.arc(earth.x, earth.y, orbitRadius, 0, Math.PI * 2);
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+                ctx.stroke();
+
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+        }
+
+        setupCanvas('sarCanvas', 'SAR');
+        setupCanvas('msCanvas', 'MS');
+    </script>
+</body>
+</html>

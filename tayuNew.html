@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tayiwa Bwala - Portfolio</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <style>
+        /* Core styles with enhanced performance */
+        :root {
+            --primary: #059669;
+            --secondary: #10b981;
+        }
+
+        /* Improved Performance with hardware acceleration */
+        .hardware-accelerated {
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            perspective: 1000px;
+        }
+
+        /* Enhanced Card Design */
+        .modern-card {
+            @apply bg-white rounded-lg overflow-hidden shadow-lg transition-all duration-500 transform;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .modern-card:hover {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            transform: translateY(-10px);
+        }
+
+        /* Improved Hero Section */
+        .hero-section {
+            min-height: 100vh;
+            background: linear-gradient(
+                rgba(0, 0, 0, 0.7),
+                rgba(0, 0, 0, 0.8)
+            ),
+            url('/api/placeholder/1920/1080');
+            background-size: cover;
+            background-position: center;
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+        }
+
+        /* Enhanced Navigation */
+        .nav-link {
+            position: relative;
+            padding-bottom: 0.25rem;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 50%;
+            background: var(--primary);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+            left: 0;
+        }
+
+        /* Modern Image Container */
+        .image-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 0.5rem;
+        }
+
+        .image-container img {
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .image-container:hover img {
+            transform: scale(1.1);
+        }
+
+        /* Enhanced Mobile Menu */
+        .mobile-menu {
+            transform: translateX(-100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .mobile-menu.active {
+            transform: translateX(0);
+        }
+
+        /* Smooth Scrollbar for Desktop */
+        @media (min-width: 768px) {
+            ::-webkit-scrollbar {
+                width: 10px;
+            }
+
+            ::-webkit-scrollbar-track {
+                background: #f1f1f1;
+            }
+
+            ::-webkit-scrollbar-thumb {
+                background: var(--primary);
+                border-radius: 5px;
+            }
+
+            ::-webkit-scrollbar-thumb:hover {
+                background: var(--secondary);
+            }
+        }
+
+        /* Loading Animation */
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Modern Grid Layout */
+        .modern-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        /* Enhanced Typography */
+        .heading-xl {
+            @apply text-4xl md:text-5xl lg:text-6xl font-bold;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+        }
+
+        .heading-lg {
+            @apply text-3xl md:text-4xl font-bold;
+            line-height: 1.3;
+            letter-spacing: -0.01em;
+        }
+
+        /* Advanced Animations */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* State Indicators */
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+
+        .status-active {
+            background-color: var(--primary);
+            box-shadow: 0 0 0 rgba(5, 150, 105, 0.4);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(5, 150, 105, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(5, 150, 105, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(5, 150, 105, 0);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Enhanced Navigation -->
+    <nav class="fixed w-full z-50 bg-white bg-opacity-90 backdrop-filter backdrop-blur-lg">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center space-x-4">
+                    <img src="Images/tayus.png" alt="Tayiwa Bwala" 
+                         class="w-12 h-12 rounded-full border-2 border-emerald-600 shadow-lg transition-transform duration-300 hover:scale-110"/>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="About Me.html" class="nav-link text-gray-800 hover:text-emerald-600 font-medium">About Me</a>
+                    <a href="#achievements" class="nav-link text-gray-800 hover:text-emerald-600 font-medium">Achievements</a>
+                    <a href="#portfolio" class="nav-link text-gray-800 hover:text-emerald-600 font-medium">Portfolio</a>
+                    <a href="Contact.html" class="nav-link text-gray-800 hover:text-emerald-600 font-medium">Contact</a>
+                    <a href="CV.html" class="nav-link text-gray-800 hover:text-emerald-600 font-medium">CV</a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden focus:outline-none" onclick="toggleMobileMenu()">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Enhanced Mobile Menu -->
+        <div id="mobileMenu" class="mobile-menu fixed inset-y-0 left-0 w-64 bg-white shadow-lg md:hidden">
+            <div class="p-6 space-y-4">
+                <a href="About Me.html" class="block text-gray-800 hover:text-emerald-600 transition-colors duration-300">About Me</a>
+                <a href="#achievements" class="block text-gray-800 hover:text-emerald-600 transition-colors duration-300">Achievements</a>
+                <a href="#portfolio" class="block text-gray-800 hover:text-emerald-600 transition-colors duration-300">Portfolio</a>
+                <a href="Contact.html" class="block text-gray-800 hover:text-emerald-600 transition-colors duration-300">Contact</a>
+                <a href="CV.html" class="block text-gray-800 hover:text-emerald-600 transition-colors duration-300">CV</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Enhanced Hero Section -->
+    <section class="hero-section flex items-center justify-center text-white px-4">
+        <div class="text-center" data-aos="fade-up" data-aos-duration="1000">
+            <h1 class="heading-xl mb-6">Tayiwa Bwala</h1>
+            <p class="text-xl md:text-2xl mb-8 font-light">Policy Researcher</p>
+            <div class="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-6">
+                <a href="#portfolio" 
+                   class="modern-card px-8 py-4 text-white border-2 border-white hover:bg-white hover:text-gray-900 rounded-full transition-all duration-300">
+                    View My Recent Portfolio
+                </a>
+                <a href="/CV.html" 
+                   class="modern-card px-8 py-4 text-white border-2 border-white hover:bg-white hover:text-gray-900 rounded-full transition-all duration-300">
+                    View My CV
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Achievement Section -->
+    <section id="achievements" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="heading-lg text-center mb-16" data-aos="fade-up">Key Achievements of 2024</h2>
+            <div class="modern-grid">
+                <!-- Achievement Cards -->
+                <div class="modern-card p-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="text-emerald-600 text-4xl font-bold mb-2">10+</div>
+                    <p class="text-gray-600">High-level Diplomatic Meetings Coordinated</p>
+                </div>
+                <!-- More achievement cards... -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="heading-lg text-center mb-16" data-aos="fade-up">Diplomatic Meetings Portfolio</h2>
+            <div class="modern-grid">
+                <!-- Portfolio Cards -->
+                <div class="modern-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="image-container">
+                        <img src="Images/senate tayus.png" alt="Senate Meeting" class="w-full h-48 object-cover"/>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">Senate Leadership Consultation</h3>
+                        <p class="text-gray-600 mb-4">High-level bilateral legislative cooperation meeting with Senate President</p>
+                        <div class="flex items-center text-emerald-600">
+                            <span class="status-indicator status-active"></span>
+                            <span>October 8, 2024</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- More portfolio cards... -->
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 800,
+            once: true,
+            offset: 100
+        });
+
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('active');
+        }
+
+        // Enhanced Scroll Handling
+        let lastScroll = 0;
+        const nav = document.querySelector('nav');
+
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll <= 0) {
+                nav.classList.remove('shadow-lg');
+                return;
+            }
+
+            if (currentScroll > lastScroll) {
+                nav.style.transform = 'translateY(-100%)';
+            } else {
+                nav.style.transform = 'translateY(0)';
+                nav.classList.add('shadow-lg');
+            }
+
+            lastScroll = currentScroll;
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-up').forEach(element => {
+            observer.observe(element);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>E-Library</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <style>
+      :root {
+        --primary-green: #0d8a53;
+        --secondary-green: #065f39;
+        --primary-red: #dc2626;
+        --accent-light: #f0fdf4;
+      }
+
+      .search-container {
+        background: linear-gradient(
+          135deg,
+          var(--primary-green),
+          var(--primary-red)
+        );
+        padding: 2rem;
+        border-radius: 15px;
+        margin-bottom: 2rem;
+      }
+
+      .domain-card {
+        border: none;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        overflow: hidden;
+        height: 100%;
+      }
+
+      .domain-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .domain-icon {
+        font-size: 2rem;
+        color: var(--primary-green);
+        margin-bottom: 1rem;
+      }
+
+      .book-card {
+        border: none;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        margin-bottom: 1.5rem;
+      }
+
+      .book-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .book-cover {
+        height: 200px;
+        background-size: cover;
+        background-position: center;
+        border-radius: 12px 12px 0 0;
+      }
+
+      .filter-sidebar {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      }
+
+      .filter-group {
+        margin-bottom: 1.5rem;
+      }
+
+      .availability-badge {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+      }
+
+      .reading-stats {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .stat-item {
+        text-align: center;
+        padding: 1rem;
+      }
+
+      .stat-number {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: var(--primary-green);
+      }
+
+      .advanced-search {
+        display: none;
+        background: white;
+        padding: 1.5rem;
+        border-radius: 12px;
+        margin-top: 1rem;
+      }
+
+      .tag {
+        display: inline-block;
+        padding: 3px 10px;
+        border-radius: 15px;
+        background: #e9ecef;
+        margin: 2px;
+        font-size: 0.85rem;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container">
+        <a class="navbar-brand" href="#"> eLibrary </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/final.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#bookmarks">My Bookmarks</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#history">Reading History</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container mt-4">
+      <!-- Search Section -->
+      <div class="search-container">
+        <div class="row">
+          <div class="col-md-8 mx-auto text-center text-white mb-4">
+            <h2>Explore Our Digital Collection</h2>
+            <p>
+              Access thousands of academic resources across multiple disciplines
+            </p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-8 mx-auto">
+            <div class="input-group">
+              <input
+                type="text"
+                class="form-control form-control-lg"
+                placeholder="Search by title, author, or keywords..."
+              />
+              <button class="btn btn-light btn-lg">
+                <i class="fas fa-search"></i>
+              </button>
+            </div>
+            <div class="text-center mt-2">
+              <button
+                class="btn btn-link text-white"
+                onclick="toggleAdvancedSearch()"
+              >
+                Advanced Search
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Advanced Search Options -->
+        <div class="advanced-search" id="advancedSearch">
+          <div class="row">
+            <div class="col-md-4">
+              <select class="form-select mb-2">
+                <option>Select Domain</option>
+                <option>Computer Science</option>
+                <option>Engineering</option>
+                <option>Biology</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <select class="form-select mb-2">
+                <option>Publication Year</option>
+                <option>2024</option>
+                <option>2023</option>
+                <option>2022</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <select class="form-select mb-2">
+                <option>Document Type</option>
+                <option>Books</option>
+                <option>Journals</option>
+                <option>Conference Papers</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reading Statistics -->
+      <div class="reading-stats">
+        <div class="row">
+          <div class="col-md-3 stat-item">
+            <div class="stat-number">1,247</div>
+            <div>Available Resources</div>
+          </div>
+          <div class="col-md-3 stat-item">
+            <div class="stat-number">85</div>
+            <div>Active Readers</div>
+          </div>
+          <div class="col-md-3 stat-item">
+            <div class="stat-number">12</div>
+            <div>Domains</div>
+          </div>
+          <div class="col-md-3 stat-item">
+            <div class="stat-number">324</div>
+            <div>New Additions</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <!-- Filter Sidebar -->
+        <div class="col-md-3">
+          <div class="filter-sidebar">
+            <h5>Filters</h5>
+
+            <div class="filter-group">
+              <h6>Domains</h6>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="cs" />
+                <label class="form-check-label" for="cs"
+                  >Computer Science</label
+                >
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="eng" />
+                <label class="form-check-label" for="eng">Engineering</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="bio" />
+                <label class="form-check-label" for="bio">Biology</label>
+              </div>
+            </div>
+
+            <div class="filter-group">
+              <h6>Document Type</h6>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="books" />
+                <label class="form-check-label" for="books">Books</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="journals" />
+                <label class="form-check-label" for="journals">Journals</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="papers" />
+                <label class="form-check-label" for="papers"
+                  >Research Papers</label
+                >
+              </div>
+            </div>
+
+            <div class="filter-group">
+              <h6>Publication Year</h6>
+              <select class="form-select">
+                <option>All Years</option>
+                <option>2024</option>
+                <option>2023</option>
+                <option>2022</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-md-9">
+          <!-- Recent Additions -->
+          <h4 class="mb-4">Recent Additions</h4>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="book-card card">
+                <div
+                  class="book-cover"
+                  style="background-image: url('/musk.png')"
+                ></div>
+                <span class="availability-badge bg-success text-white"
+                  >Available</span
+                >
+                <div class="card-body">
+                  <h5 class="card-title">Advanced Trolling</h5>
+                  <p class="card-text">By Elon Musk</p>
+                  <div class="mb-2">
+                    <span class="tag">Machine Learning</span>
+                    <span class="tag">AI</span>
+                  </div>
+                  <a href="/Elon.pdf" class="btn btn-primary">Read Now</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="book-card card">
+                <div
+                  class="book-cover"
+                  style="background-image: url('mushh.png')"
+                ></div>
+                <span class="availability-badge bg-warning text-dark"
+                  >In Use</span
+                >
+                <div class="card-body">
+                  <h5 class="card-title">Quantum Computing Basics</h5>
+                  <p class="card-text">By Dr. Tayiwa Bwala</p>
+                  <div class="mb-2">
+                    <span class="tag">Quantum</span>
+                    <span class="tag">Computing</span>
+                  </div>
+                  <a href="#" class="btn btn-primary">Join Queue</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="book-card card">
+                <div
+                  class="book-cover"
+                  style="background-image: url('shax.jpeg')"
+                ></div>
+                <span class="availability-badge bg-success text-white"
+                  >Available</span
+                >
+                <div class="card-body">
+                  <h5 class="card-title">Sustainable Engineering</h5>
+                  <p class="card-text">By Engr. Ishaku Gayus Bwala</p>
+                  <div class="mb-2">
+                    <span class="tag">Engineering</span>
+                    <span class="tag">Sustainability</span>
+                  </div>
+                  <a href="#" class="btn btn-primary">Read Now</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function toggleAdvancedSearch() {
+        const advancedSearch = document.getElementById("advancedSearch");
+        advancedSearch.style.display =
+          advancedSearch.style.display === "none" ? "block" : "none";
+      }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

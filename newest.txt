@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSTD Portal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #1a73e8;
+            --secondary-blue: #1557b0;
+            --primary-green: #34a853;
+            --secondary-green: #2a8a4a;
+            --primary-red: #ea4335;
+            --secondary-red: #c5221f;
+            --accent-light: #f1f3f4;
+            --text-dark: #202124;
+            --transition-speed: 0.3s;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            color: var(--text-dark);
+            background-color: #f8f9fa;
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            padding: 0.75rem 0;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .navbar-brand img {
+            width: 50px;
+            height: 50px;
+        }
+
+        .nav-link {
+            color: var(--primary-blue) !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            margin: 0 0.25rem;
+            border-radius: 6px;
+            transition: all var(--transition-speed);
+        }
+
+        .nav-link:hover {
+            background-color: var(--accent-light);
+            color: var(--secondary-blue) !important;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--accent-light) 0%, white 100%);
+            padding: 4rem 0;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M0 0 L100 0 L100 100 Z" fill="%231a73e810"/></svg>');
+            background-size: cover;
+        }
+
+        .hero h1 {
+            font-weight: 800;
+            color: var(--primary-blue);
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Department Grid */
+        .departments-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            padding: 0 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .department-card {
+            background: white;
+            border: none;
+            border-radius: 16px;
+            transition: all var(--transition-speed);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .department-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--primary-green));
+        }
+
+        .department-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-body {
+            padding: 2rem;
+        }
+
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--accent-light);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            color: var(--primary-blue);
+            font-size: 1.5rem;
+        }
+
+        .card-title {
+            color: var(--primary-blue);
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .btn-cstd {
+            background: linear-gradient(90deg, var(--primary-blue), var(--primary-green));
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all var(--transition-speed);
+        }
+
+        .btn-cstd:hover {
+            background: linear-gradient(90deg, var(--secondary-blue), var(--secondary-green));
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        .footer {
+            background-color: white;
+            border-top: 1px solid #e5e7eb;
+            padding: 2rem 0;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .footer-brand img {
+            width: 40px;
+            height: 40px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-links a {
+            color: var(--primary-blue);
+            text-decoration: none;
+            transition: color var(--transition-speed);
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-red);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="CSTD.png" alt="CSTD Logo">
+                <span class="w-18 h-20 rounded-full border-5 border-emerald-600 shadow-lg" style="color: var(--primary-blue)">CSTD</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="Departments.html">Departments</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="StaffUser.html">Staff Login</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <div class="container text-center">
+            <h1>CSTD Portal</h1>
+            <p class="lead mb-4">Centre for Satellite Technology Development</p>
+        </div>
+    </div>
+
+    <!-- Departments Grid -->
+    <div class="container" id="departments">
+        <div class="departments-grid">
+            <!-- Registry -->
+            <div class="department-card card">
+                <div class="card-body">
+                    <div class="card-icon">
+                        <i class="fas fa-folder-open"></i>
+                    </div>
+                    <h5 class="card-title">Registry</h5>
+                    <p class="card-text">
+                        Manage and access institutional records with our advanced digital filing system.
+                    </p>
+                    <a href="/registry.html" class="btn btn-cstd">Access Registry</a>
+                </div>
+            </div>
+
+            <!-- E-Library -->
+            <div class="department-card card">
+                <div class="card-body">
+                    <div class="card-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <h5 class="card-title">E-Library</h5>
+                    <p class="card-text">
+                        Access our digital collection of research papers and technical documentation.
+                    </p>
+                    <a href="/eLibrary.html" class="btn btn-cstd">Enter Library</a>
+                </div>
+            </div>
+
+            <!-- Admin -->
+            <div class="department-card card">
+                <div class="card-body">
+                    <div class="card-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h5 class="card-title">Admin</h5>
+                    <p class="card-text">
+                        Comprehensive staff management and HR process automation platform.
+                    </p>
+                    <a href="/AdminMain.html" class="btn btn-cstd">Admin Portal</a>
+                </div>
+            </div>
+
+            <!-- Procurement -->
+            <div class="department-card card">
+                <div class="card-body">
+                    <div class="card-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <h5 class="card-title">Procurement</h5>
+                    <p class="card-text">
+                        Streamline procurement processes and vendor management system.
+                    </p>
+                    <a href="procurement.html" class="btn btn-cstd">Procurement</a>
+                </div>
+            </div>
+
+            <!-- Computer Lab -->
+            <div class="department-card card">
+                <div class="card-body">
+                    <div class="card-icon">
+                        <i class="fas fa-desktop"></i>
+                    </div>
+                    <h5 class="card-title">Embedded Systems Lab</h5>
+                    <p class="card-text">
+                        Book workstations and access lab resources efficiently.
+                    </p>
+                    <a href="/ComputerLab.html" class="btn btn-cstd">Lab Portal</a>
+                </div>
+            </div>
+
+            <!-- Servicom -->
+            <div class="department-card card">
+                <div class="card-body">
+                    <div class="card-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h5 class="card-title">Servicom</h5>
+                    <p class="card-text">
+                        Submit and track service-related complaints for improved service delivery.
+                    </p>
+                    <a href="/servicom.html" class="btn btn-cstd">Access SERVICOM</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <img src="CSTD.png" alt="CSTD Logo">
+                    <span class="fw-bold">CSTD © 2025 (An Experiment By Engr. Ishaku Gayus Bwala)</span>
+                </div>
+                <div class="footer-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Contact Support</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

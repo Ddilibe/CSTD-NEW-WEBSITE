@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AsoLens Maritime Intelligence Dashboard</title>
+    <style>
+        /* Base Styles */
+        :root {
+            --primary: #003366;
+            --secondary: #40E0D0;
+            --accent: #00FFFF;
+            --dark: #0A1929;
+            --light: #F0F8FF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: var(--dark);
+            color: var(--light);
+        }
+
+        /* Dashboard Layout */
+        .container {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: linear-gradient(180deg, var(--primary), #001A33);
+            padding: 2rem;
+            border-right: 1px solid rgba(64, 224, 208, 0.1);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 2rem;
+            position: relative;
+        }
+
+        /* Alert System */
+        .alerts {
+            background: rgba(255, 99, 71, 0.1);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .alert {
+            padding: 0.8rem;
+            background: rgba(255, 99, 71, 0.2);
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            animation: pulse 2s infinite;
+        }
+
+        /* Map Container */
+        .map-container {
+            height: 60vh;
+            background: linear-gradient(45deg, var(--primary), var(--dark));
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Metrics Grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .metric-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--secondary);
+        }
+
+        /* Typography */
+        h1 {
+            color: var(--secondary);
+            margin-bottom: 2rem;
+        }
+
+        h2 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
+
+        /* Interactive Elements */
+        .vessel-marker {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: var(--secondary);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent);
+        }
+
+        /* Time Window Selector */
+        .time-selector {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h1>AsoLens Maritime Intelligence</h1>
+            
+            <div class="alerts">
+                <h2>Active Alerts</h2>
+                <div class="alert">
+                    🚨 Critical: Suspected piracy activity @ 4.5°N, 7.2°E
+                </div>
+                <div class="alert">
+                    ⚠️ Warning: Unidentified vessel near EEZ boundary
+                </div>
+                <div class="alert">
+                    ℹ️ Info: Increased fishing activity in sector B-12
+                </div>
+            </div>
+
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <h3>Total Vessels</h3>
+                    <p>142</p>
+                </div>
+                <div class="metric-card">
+                    <h3>Active Alerts</h3>
+                    <p>3</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="time-selector">
+                <select>
+                    <option>Last 24 Hours</option>
+                    <option>Last 7 Days</option>
+                    <option>Custom Range</option>
+                </select>
+            </div>
+
+            <div class="map-container">
+                <!-- Map would be integrated here -->
+                <div class="vessel-marker" style="top: 30%; left: 45%"></div>
+                <div class="vessel-marker" style="top: 55%; left: 60%"></div>
+            </div>
+
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <h3>Risk Level</h3>
+                    <p>High</p>
+                    <div class="risk-bar"></div>
+                </div>
+                
+                <div class="metric-card">
+                    <h3>Response Time</h3>
+                    <p>42m avg</p>
+                </div>
+
+                <div class="metric-card">
+                    <h3>Protected Assets</h3>
+                    <p>18 Oil Rigs</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
